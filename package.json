@@ -1,0 +1,16 @@
+{
+  "name": "tybot",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "build": "cd frontend && pnpm run build",
+    "lint": "prettier --check . && ruff check --no-cache",
+    "format": "prettier --write . && ruff format --no-cache",
+    "embed": "mkdir -p bot/public/build/ && rm -rf bot/public/build/* && cp -r frontend/dist/* bot/public/build/"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "prettier": "^2.8.8"
+  }
+}

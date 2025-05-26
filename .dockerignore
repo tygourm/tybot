@@ -1,0 +1,3 @@
+bot/.files
+bot/**/__pycache__/
+cli/**/__pycache__/

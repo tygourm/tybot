@@ -1,0 +1,7 @@
+.cache/
+.venv/
+__pycache__/
+bot/public/build/
+dist/
+node_modules/
+site/
