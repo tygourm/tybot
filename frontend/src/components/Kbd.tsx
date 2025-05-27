@@ -47,7 +47,7 @@ const Kbd = forwardRef(
       <Comp
         {...kbdProps}
         className={cn(
-          'inline-flex select-none items-center justify-center whitespace-nowrap rounded-[4px] bg-muted px-1 py-[1px] font-mono text-xs tracking-tight text-muted-foreground shadow',
+          'inline-flex select-none items-center justify-center whitespace-nowrap rounded-[4px] bg-muted px-1 py-[1px] code text-xs tracking-tight text-muted-foreground shadow',
           className
         )}
         ref={forwardedRef}

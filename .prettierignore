@@ -5,3 +5,5 @@ bot/public/
 dist/
 node_modules/
 site/
+volumes/
+frontend/public/

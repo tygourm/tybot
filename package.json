@@ -7,7 +7,7 @@
     "build": "cd frontend && pnpm run build",
     "lint": "prettier --check . && ruff check --no-cache",
     "format": "prettier --write . && ruff format --no-cache",
-    "embed": "mkdir -p bot/public/build/ && rm -rf bot/public/build/* && cp -r frontend/dist/* bot/public/build/"
+    "embed": "mkdir -p bot/public/build/ && rm -rf bot/public/build/* && cp -r frontend/dist/* bot/public/build/ && rm bot/public/build/*.css && rm -rf bot/public/build/fonts/"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",

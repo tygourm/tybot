@@ -32,7 +32,7 @@ ARG APP_GROUP
 # Environment
 ENV PIP_NO_CACHE_DIR=1
 ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONWRITEBYTECODE=1
 
 # Setup
 RUN groupadd $APP_GROUP && useradd -g $APP_GROUP -m -u 1000 $APP_USER
@@ -43,6 +43,5 @@ COPY --chown=$APP_USER:$APP_GROUP --from=builder /wheels /wheels
 RUN pip install --no-deps /wheels/*.whl && rm -rf /wheels
 RUN chown -R $APP_USER:$APP_GROUP /home/$APP_USER/app
 
-# Run
+# Non-root user
 USER $APP_USER
-CMD ["/bin/bash"]

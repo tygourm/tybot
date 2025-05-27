@@ -103,7 +103,7 @@ export function LoginForm({
               <Input
                 id="email"
                 autoFocus
-                placeholder="me@example.com"
+                // placeholder="me@example.com"
                 {...register('email', {
                   required: t('auth.login.form.email.required')
                 })}

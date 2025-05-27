@@ -28,7 +28,7 @@ ARG APP_GROUP
 # Environment
 ENV PIP_NO_CACHE_DIR=1
 ENV PYTHONUNBUFFERED=1
-ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONWRITEBYTECODE=1
 
 # Setup
 RUN groupadd $APP_GROUP && useradd -g $APP_GROUP -m -u 1000 $APP_USER
@@ -42,7 +42,8 @@ RUN chown -R $APP_USER:$APP_GROUP /home/$APP_USER/app
 # Sources
 COPY --chown=$APP_USER:$APP_GROUP bot .
 
-# Run
+# Non-root user
 USER $APP_USER
-ENV HOST=0.0.0.0
+
+# Run
 CMD ["python", "main.py"]

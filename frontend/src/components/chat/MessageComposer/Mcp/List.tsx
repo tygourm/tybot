@@ -120,7 +120,7 @@ const McpItem = ({ mcp, onDelete, isLoading }: McpItemProps) => {
           {mcp.clientType === 'stdio' ? 'Command' : 'URL'}
         </div>
         <div className="flex items-center w-full bg-accent px-3 py-1 rounded gap-2">
-          <pre className="text-sm font-mono flex-grow truncate">
+          <pre className="text-sm code flex-grow truncate">
             {mcp.command || mcp.url || 'N/A'}
           </pre>
           <CopyButton content={mcp.command || mcp.url} />

@@ -1,9 +1,9 @@
 import { Translator } from 'components/i18n';
 
-import 'assets/logo_dark.svg';
-import LogoDark from 'assets/logo_dark.svg?react';
-import 'assets/logo_light.svg';
-import LogoLight from 'assets/logo_light.svg?react';
+import 'assets/logo_dark.png';
+import LogoDark from 'assets/logo_dark.png?react';
+import 'assets/logo_light.png';
+import LogoLight from 'assets/logo_light.png?react';
 
 import { useTheme } from './ThemeProvider';
 

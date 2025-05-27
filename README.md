@@ -31,17 +31,6 @@ Activate the Python virtual environment before continuing.
 source .venv/bin/activate
 ```
 
-!!! tip
-
-    - In VS Code, you must link the virtual environment to the
-    Python extension. Run the command
-    `Ctrl+Shift+P > Python: Select Interpreter` and select
-    `./.venv/bin/python`.
-    - If you update the dependencies, you might have to refresh
-    VS Code. Run the command
-    `Ctrl+Shift+P > Developer: Reload Window` to refresh the IDE
-    and keep your shell sessions.
-
 ### Frontend
 
 Build the frontend.
@@ -80,7 +69,7 @@ cli --install-completion
 source ~/.bashrc
 ```
 
-Now, tab completion is available `cli [TAB][TAB]`.
+Now, tab completion is available `cli [TAB][TAB] ✨`.
 
 ### Docs
 
@@ -97,17 +86,6 @@ mkdocs build
 ```
 
 ## Deployment
-
-!!! info
-
-    - With `docker build`, `-f` is the name of the Dockerfile, and
-    `-t` is the name (and optionally, tag) of the image. The `.`
-    at the end is the path or URL to the build context (that is
-    to say, the current directory).
-    - With `docker run`, `--rm` automatically remove the
-    container and its associated anonymous volumes when it exits,
-    `-p` publishes a container's port(s) to the host and `-it`
-    starts an interactive shell in the container.
 
 ### Bot
 
@@ -137,7 +115,7 @@ docker build -f Dockerfile.cli -t tybot-cli .
 Run the CLI container.
 
 ```bash
-docker run --rm -it tybot-cli
+docker run --rm -it tybot-cli /bin/bash
 ```
 
 Inside of the container, you can run the `cli` command, and
@@ -148,7 +126,15 @@ cli --install-completion
 source ~/.bashrc
 ```
 
-Now, tab completion is available `cli [TAB][TAB]`.
+Now, tab completion is available `cli [TAB][TAB] ✨`.
+
+### All services
+
+All services can be deployed with `docker compose`.
+
+```bash
+docker compose up
+```
 
 ## Miscellaneous
 

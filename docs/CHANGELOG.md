@@ -12,4 +12,5 @@ this project adheres to
 
 ### Added
 
+- ✈️ Offline chatbot
 - 🎉 Probably last commit

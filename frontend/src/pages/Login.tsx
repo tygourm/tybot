@@ -111,12 +111,7 @@ export default function Login() {
               apiClient.buildEndpoint('/favicon')
             }
             alt="Image"
-            className={`absolute inset-0 h-full w-full object-cover ${
-              isDarkMode
-                ? config?.ui?.login_page_image_dark_filter ||
-                  'brightness-[0.2] grayscale'
-                : config?.ui?.login_page_image_filter || ''
-            }`}
+            className={'absolute inset-0 h-full w-full object-cover'}
           />
         </div>
       ) : null}

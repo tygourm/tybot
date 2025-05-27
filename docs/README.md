@@ -2,6 +2,13 @@
 
 Yet another chatbot.
 
+!!! tip "Design principles"
+
+    - **DRY** Don't Repeat Yourself
+    - **KISS** Keep It Simple, Stupid
+    - **YAGNI** You Ain't Gonna Need It
+    - **SOLID** Single responsibility, Open/closed, Liskov substitution, Interface segregation, Dependency inversion
+
 ## Prerequisites
 
 This project uses [pnpm](https://pnpm.io) as a Node package
@@ -31,7 +38,7 @@ Activate the Python virtual environment before continuing.
 source .venv/bin/activate
 ```
 
-!!! tip
+!!! tip "VS Code"
 
     - In VS Code, you must link the virtual environment to the
     Python extension. Run the command
@@ -80,7 +87,7 @@ cli --install-completion
 source ~/.bashrc
 ```
 
-Now, tab completion is available `cli [TAB][TAB]`.
+Now, tab completion is available `cli [TAB][TAB] ✨`.
 
 ### Docs
 
@@ -98,13 +105,13 @@ mkdocs build
 
 ## Deployment
 
-!!! info
+!!! info "Docker CLI"
 
     - With `docker build`, `-f` is the name of the Dockerfile, and
     `-t` is the name (and optionally, tag) of the image. The `.`
     at the end is the path or URL to the build context (that is
     to say, the current directory).
-    - With `docker run`, `--rm` automatically remove the
+    - With `docker run`, `--rm` automatically removes the
     container and its associated anonymous volumes when it exits,
     `-p` publishes a container's port(s) to the host and `-it`
     starts an interactive shell in the container.
@@ -137,7 +144,7 @@ docker build -f Dockerfile.cli -t tybot-cli .
 Run the CLI container.
 
 ```bash
-docker run --rm -it tybot-cli
+docker run --rm -it tybot-cli /bin/bash
 ```
 
 Inside of the container, you can run the `cli` command, and
@@ -148,7 +155,18 @@ cli --install-completion
 source ~/.bashrc
 ```
 
-Now, tab completion is available `cli [TAB][TAB]`.
+Now, tab completion is available `cli [TAB][TAB] ✨`.
+
+### All services
+
+All services can be deployed with `docker compose`.
+
+```bash
+docker compose up
+```
+
+You must download a model from the Ollama container before you
+can use the chat feature.
 
 ## Miscellaneous
 

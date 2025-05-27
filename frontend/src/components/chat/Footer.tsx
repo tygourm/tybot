@@ -22,7 +22,7 @@ export default function ChatFooter({ showIfEmptyThread, ...props }: Props) {
   return (
     <div className={cn('relative flex flex-col items-center gap-2 w-full')}>
       <MessageComposer {...props} />
-      <WaterMark />
+      {false && <WaterMark />}
     </div>
   );
 }

@@ -5,3 +5,4 @@ bot/public/build/
 dist/
 node_modules/
 site/
+volumes/
