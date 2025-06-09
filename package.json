@@ -4,10 +4,14 @@
   "private": true,
   "scripts": {
     "preinstall": "npx only-allow pnpm",
-    "build": "cd frontend && pnpm run build",
+    "build:docs": "mkdocs build",
+    "build:frontend": "cd frontend && pnpm run build",
+    "build": "pnpm build:docs && pnpm build:frontend",
+    "embed:docs": "mkdir -p bot/public/site/ && rm -rf bot/public/site/* && cp -r site/* bot/public/site/",
+    "embed:frontend": "mkdir -p bot/public/build/ && rm -rf bot/public/build/* && cp -r frontend/dist/* bot/public/build/ && rm bot/public/build/*.css && rm -rf bot/public/build/fonts/",
+    "embed": "pnpm embed:docs && pnpm embed:frontend",
     "lint": "prettier --check . && ruff check --no-cache",
-    "format": "prettier --write . && ruff format --no-cache",
-    "embed": "mkdir -p bot/public/build/ && rm -rf bot/public/build/* && cp -r frontend/dist/* bot/public/build/ && rm bot/public/build/*.css && rm -rf bot/public/build/fonts/"
+    "format": "prettier --write . && ruff format --no-cache"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
