@@ -1,0 +1,48 @@
+services:
+  bot:
+    image: tybot-bot
+    build:
+      context: .
+      dockerfile: Dockerfile.bot
+    environment:
+      DEV: false
+      TITLE: tybot
+      VERSION: 0.0.0
+      HOST: 0.0.0.0
+      PORT: 8000
+
+      # Ollama
+      OLLAMA_MODEL: gemma3:4b
+      OLLAMA_API_KEY: empty
+      OLLAMA_BASE_URL: http://ollama:11434/v1
+
+      # Chainlit
+      CHAINLIT_AUTH_SECRET: changeme
+      DATABASE_URL: postgresql://postgres:changeme@postgres:5432/postgres
+    ports:
+      - 8000:8000
+
+  cli:
+    image: tybot-cli
+    build:
+      context: .
+      dockerfile: Dockerfile.cli
+    tty: true
+
+  ollama:
+    image: ollama/ollama:0.7.1
+    gpus: all
+    ports:
+      - 11434:11434
+    volumes:
+      - ./volumes/ollama:/root/.ollama
+
+  postgres:
+    image: postgres:17.5-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: changeme
+    ports:
+      - 5432:5432
+    volumes:
+      - ./migrations:/docker-entrypoint-initdb.d

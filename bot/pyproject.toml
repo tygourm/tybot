@@ -1,0 +1,5 @@
+[project]
+name = "bot"
+version = "0.0.0"
+requires-python = ">=3.13"
+dependencies = ["asyncpg", "chainlit==2.5.5", "openai", "pydantic-settings"]

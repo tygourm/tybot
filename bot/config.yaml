@@ -1,0 +1,46 @@
+starters:
+  - label: Train a model
+    message: |-
+      You are an AI engineer. The use case is hand-written digits recognition.
+      Train a model in Python using PyTorch, following DRY, KISS, YAGNI, and SOLID principles.
+      Provide clear, optimized, and well-structured code. Handle data preprocessing, model definition, training loop, and evaluation.
+    icon: /public/icons/pytorch.svg
+  - label: Create a frontend
+    message: |-
+      You are a frontend engineer. The use case is a simple CRUD application.
+      Develop a frontend in TypeScript using React, following DRY, KISS, YAGNI, and SOLID principles.
+      Create clear, optimized, and reusable components. Use hexagonal architecture and ensure 100% code coverage.
+    icon: /public/icons/react.svg
+  - label: Create a backend
+    message: |-
+      You are a backend engineer. The use case is a simple CRUD application.
+      Develop a backend in Python using FastAPI, following DRY, KISS, YAGNI, and SOLID principles.
+      Provide clear, optimized and well-structured code. Use hexagonal architecture and ensure 100% code coverage.
+    icon: /public/icons/fastapi.svg
+  - label: Deploy an app
+    message: |-
+      You are a DevOps engineer. The use case is a full-stack application.
+      Deploy an application consisting of a TypeScript frontend, a Python backend, and a PostgreSQL database.
+      Provide clear and optimized Dockerfiles for each component, a docker-compose file for development, and Kubernetes manifests for production.
+    icon: /public/icons/docker.svg
+chat:
+  settings:
+    stream:
+      label: Stream
+      initial: true
+      description: ⚡️ Toggle live responses
+    prompt:
+      label: Prompt
+      initial: |-
+        You are TyBot, a helpful assistant.
+        Reply to the user in a technical and concise manner, keeping responses straight to the point.
+        If you don't know the answer, simply say "I don't know", don't try to make up an answer. Respond in user's language.
+      multiline: true
+      description: 📝 Initial chatbot message
+    temperature:
+      label: Temperature
+      initial: 0.7
+      min: 0
+      max: 2
+      step: 0.1
+      description: ⚗️ Adjust response creativity
