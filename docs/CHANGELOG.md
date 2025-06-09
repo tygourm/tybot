@@ -12,4 +12,5 @@ this project adheres to
 
 ### Added
 
+- 📝 Embed docs in the bot
 - 🎉 Probably last commit

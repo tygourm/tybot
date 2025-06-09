@@ -113,7 +113,12 @@ custom_build = "./public/build"
 name = "API Docs"
 display_name = "API Docs"
 icon_url = "/public/icons/swagger.svg"
-url = "/docs"
+url = "/api-docs"
+[[UI.header_links]]
+name = "App Docs"
+display_name = "App Docs"
+icon_url = "/public/icons/mkdocs.svg"
+url = "/app-docs/index.html"
 
 [meta]
 generated_by = "2.5.5"

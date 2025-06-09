@@ -7,21 +7,21 @@ starters:
     icon: /public/icons/pytorch.svg
   - label: Create a frontend
     message: |-
-      You are a frontend engineer. The use case is a simple CRUD application.
+      You are a frontend engineer. The use case is a simple CRUD application with API calls.
       Develop a frontend in TypeScript using React, following DRY, KISS, YAGNI, and SOLID principles.
-      Create clear, optimized, and reusable components. Use hexagonal architecture and ensure 100% code coverage.
+      Provide clear, optimized, and reusable components. Use hexagonal architecture and ensure 100% code coverage.
     icon: /public/icons/react.svg
   - label: Create a backend
     message: |-
-      You are a backend engineer. The use case is a simple CRUD application.
+      You are a backend engineer. The use case is a simple CRUD application with in-memory db.
       Develop a backend in Python using FastAPI, following DRY, KISS, YAGNI, and SOLID principles.
       Provide clear, optimized and well-structured code. Use hexagonal architecture and ensure 100% code coverage.
     icon: /public/icons/fastapi.svg
-  - label: Deploy an app
+  - label: Deploy an application
     message: |-
-      You are a DevOps engineer. The use case is a full-stack application.
-      Deploy an application consisting of a TypeScript frontend, a Python backend, and a PostgreSQL database.
-      Provide clear and optimized Dockerfiles for each component, a docker-compose file for development, and Kubernetes manifests for production.
+      You are a DevOps engineer. The use case is the deployment of a full-stack application.
+      The application consists of a TypeScript frontend, a Python backend, and a PostgreSQL database.
+      Provide clear and optimized Dockerfiles for each service, a docker-compose file for development, and Kubernetes manifests for production.
     icon: /public/icons/docker.svg
 chat:
   settings:
@@ -39,7 +39,7 @@ chat:
       description: 📝 Initial chatbot message
     temperature:
       label: Temperature
-      initial: 0.7
+      initial: 0.2
       min: 0
       max: 2
       step: 0.1

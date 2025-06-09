@@ -98,8 +98,9 @@ Now, tab completion is available `cli [TAB][TAB] ✨`.
     to say, the current directory).
     - With `docker run`, `--rm` automatically removes the
     container and its associated anonymous volumes when it exits,
-    `-p` publishes a container's port(s) to the host and `-it`
-    starts an interactive shell in the container.
+    `-e` sets environment variables, `-p` publishes a container's
+    port(s) to the host and `-it` starts an interactive shell in
+    the container.
 
 ### Bot
 
@@ -112,7 +113,7 @@ docker build -f Dockerfile.bot -t tybot-bot .
 Run the bot container.
 
 ```bash
-docker run --rm -p 8000:8000 tybot-bot
+docker run --rm -e HOST=0.0.0.0 -p 8000:8000 tybot-bot
 ```
 
 The bot is available at
