@@ -16,3 +16,7 @@ this project adheres to
 - 👷 Add CI
 - 📝 Embed docs in the bot
 - 🎉 Probably last commit
+
+### Fixed
+
+- 🚨 Fix lint in CI
