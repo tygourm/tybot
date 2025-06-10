@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.openapi.docs import get_swagger_ui_html
 from starlette.responses import FileResponse, HTMLResponse, Response
 
-from bot.core.settings import settings
+from src.bot.core.settings import settings
 
 app = FastAPI(
     debug=settings.DEV,
