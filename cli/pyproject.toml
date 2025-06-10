@@ -12,4 +12,4 @@ dependencies = ["pydantic-settings", "typer"]
 cli = "main:app"
 
 [tool.hatch.build]
-include = ["main.py", "cli/**/*.py"]
+include = ["main.py", "src/**/*.py"]

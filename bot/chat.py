@@ -6,7 +6,8 @@ from pathlib import Path
 import chainlit as cl
 from openai import AsyncOpenAI
 
-from bot.core.settings import settings
+from src.bot.core.config import chat_settings, starters
+from src.bot.core.settings import settings
 
 if os.environ.get("CHAINLIT_AUTH_SECRET"):
 
@@ -17,7 +18,7 @@ if os.environ.get("CHAINLIT_AUTH_SECRET"):
 
 @cl.on_message
 async def on_message() -> None:
-    chat_settings = cl.user_session.get("chat_settings")
+    user_settings = cl.user_session.get("chat_settings")
     client = AsyncOpenAI(
         api_key=settings.OLLAMA_API_KEY,
         base_url=settings.OLLAMA_BASE_URL,
@@ -25,19 +26,19 @@ async def on_message() -> None:
 
     response = cl.Message("")
     messages = [
-        {"role": "system", "content": chat_settings["prompt"]},
+        {"role": "system", "content": user_settings["prompt"]},
         *cl.chat_context.to_openai(),
     ]
 
     async with cl.Step() as step:
         step.input = messages
 
-        if chat_settings["stream"]:
+        if user_settings["stream"]:
             stream = await client.chat.completions.create(
                 messages=messages,
                 model=settings.OLLAMA_LLMS,
                 stream=True,
-                temperature=chat_settings["temperature"],
+                temperature=user_settings["temperature"],
             )
             async for chunk in stream:
                 if token := chunk.choices[0].delta.content:
@@ -48,7 +49,7 @@ async def on_message() -> None:
             chat_completion = await client.chat.completions.create(
                 messages=messages,
                 model=settings.OLLAMA_LLMS,
-                temperature=chat_settings["temperature"],
+                temperature=user_settings["temperature"],
             )
             response.content = chat_completion.choices[0].message.content
             await response.send()
@@ -66,8 +67,6 @@ async def on_chat_resume() -> None:
 
 @cl.set_starters
 async def set_starters() -> list[cl.Starter]:
-    from bot.core.config import starters
-
     return [cl.Starter(**starter) for starter in starters]
 
 
@@ -78,8 +77,6 @@ async def on_chat_end() -> None:
 
 
 async def send_chat_settings() -> None:
-    from bot.core.config import chat_settings
-
     await cl.ChatSettings(
         [
             cl.input_widget.Switch(**chat_settings["stream"]),

@@ -12,6 +12,7 @@ this project adheres to
 
 ### Added
 
+- 📦️ Update packages
 - 👷 Add CI
 - 📝 Embed docs in the bot
 - 🎉 Probably last commit
