@@ -8,12 +8,14 @@ lint = ["mypy", "ruff"]
 
 [tool.mypy]
 cache_dir = "/dev/null"
+disable_error_code = ["import-untyped"]
 
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
     "COM812", # missing-trailing-comma
     "D100",   # undocumented-public-module
+    "D101",   # undocumented-public-class
     "D103",   # undocumented-public-function
     "D203",   # incorrect-blank-line-before-class
     "D213",   # multi-line-summary-second-line

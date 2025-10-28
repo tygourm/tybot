@@ -11,7 +11,7 @@ init:
 start: init
 	@trap 'kill 0' EXIT; \
 	(cd $(client_dir) && $(pnpm) start) & \
-	(cd $(server_dir) && $(uv) run server) & \
+	(cd $(server_dir) && DEBUG=True RELOAD=True $(uv) run server) & \
 	wait
 
 build: init
@@ -27,6 +27,7 @@ serve: build
 clean:
 	rm -rf dist/ node_modules/ .venv/
 	cd $(client_dir) && rm -rf dist/ node_modules/
+	cd $(server_dir) && find . -name __pycache__ -exec rm -rf {} +
 
 check: init
 	$(pnpm) prettier -c . && $(pnpm) -r exec eslint
