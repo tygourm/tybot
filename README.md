@@ -1,3 +1,5 @@
+[![CI](https://github.com/tygourm/tybot/actions/workflows/ci.yaml/badge.svg)](https://github.com/tygourm/tybot/actions/workflows/ci.yaml)
+
 # tybot
 
 Yet another chatbot.
