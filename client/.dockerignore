@@ -1,0 +1,5 @@
+components.json
+dist/
+.dockerignore
+eslint.config.js
+node_modules/

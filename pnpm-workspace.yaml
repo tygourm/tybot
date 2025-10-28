@@ -1,2 +1,4 @@
+sharedWorkspaceLockfile: false
+
 packages:
   - client

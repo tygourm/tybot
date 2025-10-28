@@ -34,6 +34,20 @@ Run the application in production mode.
 make serve
 ```
 
+## Deployment
+
+Build the Docker images.
+
+```bash
+make docker_build
+```
+
+Run the application in deployment mode.
+
+```bash
+make docker_serve
+```
+
 ## Miscellaneous
 
 ### Cleanup
@@ -42,6 +56,12 @@ Clean the workspace.
 
 ```bash
 make clean
+```
+
+Clean the Docker resources.
+
+```bash
+make docker_clean
 ```
 
 ### Linting / Formatting
