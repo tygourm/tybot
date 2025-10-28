@@ -1,0 +1,24 @@
+[project]
+name = "tybot"
+version = "0.0.0"
+requires-python = ">=3.12"
+
+[dependency-groups]
+lint = ["mypy", "ruff"]
+
+[tool.mypy]
+cache_dir = "/dev/null"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "COM812", # missing-trailing-comma
+    "D100",   # undocumented-public-module
+    "D103",   # undocumented-public-function
+    "D203",   # incorrect-blank-line-before-class
+    "D213",   # multi-line-summary-second-line
+    "INP001", # implicit-namespace-package
+]
+
+[tool.uv.workspace]
+members = ["server"]
