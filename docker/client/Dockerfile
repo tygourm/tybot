@@ -29,3 +29,5 @@ WORKDIR /usr/share/nginx/html
 
 COPY docker/client/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist .
+
+ENTRYPOINT ["sh", "-c", "./vite-envs.sh && nginx -g 'daemon off;'"]
