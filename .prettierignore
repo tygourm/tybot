@@ -1,2 +1,3 @@
-client/dist/
+client/src/routeTree.gen.ts
+client/src/vite-env.d.ts
 server/static/

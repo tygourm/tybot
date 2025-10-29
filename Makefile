@@ -38,7 +38,7 @@ docker_build:
 
 docker_serve: docker_build
 	$(docker) compose -f docker/docker-compose.yaml up -d
-	cd $(docker_dir) && $(docker) compose logs -f
+	$(docker) compose -f $(docker_dir)/docker-compose.yaml logs -f
 
 docker_clean:
 	$(docker) compose -f docker/docker-compose.yaml down
