@@ -1,4 +1,11 @@
 {
+  "chat": {
+    "placeholder": "Poser une question",
+    "welcome": "Quel est le programme aujourd’hui ?"
+  },
+  "main-button": {
+    "tooltip": "Nouveau chat"
+  },
   "theme-menu": {
     "dark": "Sombre",
     "light": "Clair",

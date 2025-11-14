@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from server.infra.api.greetings.greetings_router import router as greetings
+from server.infra.api.agents.agents_router import router as agents
 
 router = APIRouter()
-router.include_router(greetings, prefix="/greetings", tags=["greetings"])
+router.include_router(agents, prefix="/agents", tags=["agents"])
