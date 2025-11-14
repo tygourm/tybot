@@ -1,0 +1,21 @@
+{
+  "name": "tybot",
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.22.0",
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^6.0.0",
+    "prettier": "^3.6.2"
+  },
+  "prettier": {
+    "plugins": [
+      "@trivago/prettier-plugin-sort-imports"
+    ],
+    "proseWrap": "always",
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true,
+    "importOrder": [
+      "<THIRD_PARTY_MODULES>",
+      "@/"
+    ]
+  }
+}
