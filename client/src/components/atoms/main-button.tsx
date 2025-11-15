@@ -10,16 +10,14 @@ function MainButton() {
   const { t } = useTranslation();
   const [hovered, setHovered] = useState(false);
 
-  const handleClick = () => toast.warning("Not implemented yet");
-
   return (
     <WithTooltip content={t("main-button.tooltip")}>
       <Button
         size={"icon"}
         variant={"ghost"}
-        onClick={handleClick}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
+        onClick={() => toast.warning("Not implemented yet")}
       >
         {hovered ? <SquarePen /> : <Bot />}
       </Button>
