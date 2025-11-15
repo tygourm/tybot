@@ -8,6 +8,7 @@ dev = ["mypy", "ruff"]
 
 [tool.mypy]
 cache_dir = "/dev/null"
+disable_error_code = ["import-untyped"]
 
 [tool.ruff.lint]
 select = ["ALL"]

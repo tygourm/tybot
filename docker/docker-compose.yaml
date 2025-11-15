@@ -10,3 +10,10 @@ services:
       - 8000:8000
     environment:
       - HOST=0.0.0.0
+      - OLLAMA_BASE_URL=http://ollama:11434
+
+  ollama:
+    gpus: all
+    image: ollama/ollama:0.12.11
+    ports:
+      - 11434:11434

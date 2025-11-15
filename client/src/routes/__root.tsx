@@ -2,17 +2,29 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
-import { ThemeProvider } from "@/components/providers/theme";
+import { LeftSidebar } from "@/components/organisms/left-sidebar";
+import { RightSidebar } from "@/components/organisms/right-sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 
 const Route = createRootRoute({ component: Root });
 
 function Root() {
   return (
-    <ThemeProvider>
-      <Outlet />
+    <>
+      <SidebarProvider>
+        <div className="flex w-screen h-screen overflow-hidden">
+          <LeftSidebar />
+          <main className="flex-1 h-full overflow-auto">
+            <Outlet />
+          </main>
+          <RightSidebar />
+        </div>
+      </SidebarProvider>
+      <Toaster richColors />
       <ReactQueryDevtools />
       <TanStackRouterDevtools />
-    </ThemeProvider>
+    </>
   );
 }
 
