@@ -1,19 +1,18 @@
 "use client";
 
 import { HttpAgent, type UserMessage } from "@ag-ui/client";
-import type { UIMessage } from "ai";
 import { PaperclipIcon } from "lucide-react";
 import { type FormEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
+import { ChatMessage } from "@/components/molecules/chat-message";
 import { Label } from "@/components/ui/label";
 import {
   Conversation,
   ConversationContent,
   ConversationScrollButton,
 } from "@/components/ui/shadcn-io/ai/conversation";
-import { Message, MessageContent } from "@/components/ui/shadcn-io/ai/message";
 import {
   PromptInput,
   PromptInputButton,
@@ -22,7 +21,6 @@ import {
   PromptInputToolbar,
   PromptInputTools,
 } from "@/components/ui/shadcn-io/ai/prompt-input";
-import { Response } from "@/components/ui/shadcn-io/ai/response";
 import { logger } from "@/lib/logs";
 import { chatActions, chatSelectors } from "@/stores/chat";
 
@@ -79,30 +77,16 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen justify-center">
+    <div className="flex flex-col w-full h-screen justify-center pb-4">
       {messages.length === 0 && (
         <Label className="text-2xl mx-auto mb-4">{t("chat.welcome")}</Label>
       )}
       {messages.length > 0 && (
         <Conversation>
-          <ConversationContent className="px-2 space-y-4">
-            {messages.map((m) => {
-              logger.info(messages);
-              return (
-                <Message from={m.role as UIMessage["role"]}>
-                  {m.role === "user" && typeof m.content === "string" && (
-                    <MessageContent>{m.content}</MessageContent>
-                  )}
-                  {m.role === "assistant" && (
-                    <MessageContent>
-                      <Response parseIncompleteMarkdown={false}>
-                        {m.content}
-                      </Response>
-                    </MessageContent>
-                  )}
-                </Message>
-              );
-            })}
+          <ConversationContent className="p-0 px-4">
+            {messages.map((m) => (
+              <ChatMessage key={m.id} message={m} />
+            ))}
           </ConversationContent>
           <ConversationScrollButton />
         </Conversation>
