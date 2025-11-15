@@ -1,13 +1,12 @@
 "use client";
 
 import { HttpAgent, type UserMessage } from "@ag-ui/client";
-import { PaperclipIcon } from "lucide-react";
-import { type FormEvent, useState } from "react";
+import { PaperclipIcon, Settings } from "lucide-react";
+import { type FormEvent, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 import { ChatMessage } from "@/components/molecules/chat-message";
-import { Label } from "@/components/ui/label";
 import {
   Conversation,
   ConversationContent,
@@ -21,17 +20,26 @@ import {
   PromptInputToolbar,
   PromptInputTools,
 } from "@/components/ui/shadcn-io/ai/prompt-input";
+import TypingText from "@/components/ui/shadcn-io/typing-text";
 import { logger } from "@/lib/logs";
 import { chatActions, chatSelectors } from "@/stores/chat";
 
 const Chat = () => {
   const { t } = useTranslation();
   const [input, setInput] = useState("");
+  const [running, setRunning] = useState(false);
   const messages = chatSelectors.useMessages();
   const threadId = chatSelectors.useThreadId();
+  const abortController = useRef<AbortController>(new AbortController());
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!input.trim() && !running) return;
+    if (running) {
+      abortController.current?.abort();
+      abortController.current = new AbortController();
+      return;
+    }
     const message: UserMessage = {
       id: crypto.randomUUID(),
       role: "user",
@@ -44,20 +52,26 @@ const Chat = () => {
       debug: import.meta.env.DEV,
     });
     agent.runAgent(
-      { runId: crypto.randomUUID() },
+      {
+        runId: crypto.randomUUID(),
+        abortController: abortController.current,
+      },
       {
         onRunStartedEvent({ event }) {
           setInput("");
-          toast.info("Run started");
+          setRunning(true);
+          toast.info(t("chat.run-started"));
           chatActions.addMessage(message);
           chatActions.setThreadId(event.threadId);
         },
         onRunFinishedEvent() {
-          toast.success("Run finished");
+          setRunning(false);
+          toast.success(t("chat.run-finished"));
         },
         onRunErrorEvent({ event }) {
+          setRunning(false);
           logger.error(event);
-          toast.error(event.message);
+          toast.error(event.message || event.rawEvent.message);
         },
         onTextMessageStartEvent({ event }) {
           chatActions.addMessage({
@@ -79,7 +93,11 @@ const Chat = () => {
   return (
     <div className="flex flex-col w-full h-screen justify-center pb-4">
       {messages.length === 0 && (
-        <Label className="text-2xl mx-auto mb-4">{t("chat.welcome")}</Label>
+        <TypingText
+          showCursor={false}
+          text={t("chat.welcome")}
+          className="text-2xl mx-auto mb-4"
+        />
       )}
       {messages.length > 0 && (
         <Conversation>
@@ -99,11 +117,21 @@ const Chat = () => {
         />
         <PromptInputToolbar>
           <PromptInputTools>
-            <PromptInputButton>
-              <PaperclipIcon size={16} />
+            <PromptInputButton
+              onClick={() => toast.warning("Not implemented yet")}
+            >
+              <PaperclipIcon />
+            </PromptInputButton>
+            <PromptInputButton
+              onClick={() => toast.warning("Not implemented yet")}
+            >
+              <Settings />
             </PromptInputButton>
           </PromptInputTools>
-          <PromptInputSubmit status={"ready"} disabled={!input.trim()} />
+          <PromptInputSubmit
+            disabled={!input.trim() && !running}
+            status={running ? "streaming" : "ready"}
+          />
         </PromptInputToolbar>
       </PromptInput>
     </div>

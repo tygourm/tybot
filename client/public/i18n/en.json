@@ -1,6 +1,8 @@
 {
   "chat": {
     "placeholder": "Ask a question",
+    "run-started": "Run started",
+    "run-finished": "Run finished",
     "welcome": "What is the program today?"
   },
   "main-button": {
@@ -10,5 +12,14 @@
     "dark": "Dark",
     "light": "Light",
     "system": "System"
+  },
+  "tool": {
+    "error": "Error",
+    "input": "Parameters",
+    "input-streaming": "Pending",
+    "input-available": "Running",
+    "output-available": "Completed",
+    "output-error": "Error",
+    "result": "Result"
   }
 }

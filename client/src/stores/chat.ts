@@ -2,16 +2,22 @@ import { type Message } from "@ag-ui/core";
 import { Store, useStore } from "@tanstack/react-store";
 
 type State = {
-  messages: Message[];
   threadId: string | null;
+  messages: Message[];
 };
 
 const store = new Store<State>({
-  messages: [],
   threadId: null,
+  messages: [],
 });
 
 const chatActions = {
+  setThreadId: (threadId: string | null) =>
+    store.setState((prevState) => ({
+      ...prevState,
+      threadId,
+    })),
+
   addMessage: (message: Message) =>
     store.setState((prevState) => ({
       ...prevState,
@@ -33,17 +39,19 @@ const chatActions = {
       ...prevState,
       messages,
     })),
-
-  setThreadId: (threadId: string | null) =>
-    store.setState((prevState) => ({
-      ...prevState,
-      threadId,
-    })),
 };
 
 const chatSelectors = {
-  useMessages: () => useStore(store, (state) => state.messages),
   useThreadId: () => useStore(store, (state) => state.threadId),
+
+  useMessages: () => useStore(store, (state) => state.messages),
+
+  useToolMessage: (toolCallId: string) =>
+    useStore(store, (state) =>
+      state.messages
+        .filter((m) => m.role === "tool")
+        .find((m) => m.toolCallId === toolCallId),
+    ),
 };
 
 export { chatActions, chatSelectors };
