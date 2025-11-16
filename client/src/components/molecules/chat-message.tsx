@@ -1,4 +1,9 @@
-import type { Message as TMessage } from "@ag-ui/core";
+import type {
+  AssistantMessage as TAssistantMessage,
+  Message as TMessage,
+  ToolCall as TToolCall,
+  UserMessage as TUserMessage,
+} from "@ag-ui/core";
 
 import { Message, MessageContent } from "@/components/ui/shadcn-io/ai/message";
 import { Response } from "@/components/ui/shadcn-io/ai/response";
@@ -9,12 +14,7 @@ import {
   ToolInput,
   ToolOutput,
 } from "@/components/ui/shadcn-io/ai/tool";
-import { chatSelectors } from "@/stores/chat";
-
-type TAssistantMessage = Extract<TMessage, { role: "assistant" }>;
-type TToolCall = TToolCalls extends Array<infer U> ? U : never;
-type TToolCalls = NonNullable<TAssistantMessage["toolCalls"]>;
-type TUserMessage = Extract<TMessage, { role: "user" }>;
+import { useChat } from "@/hooks/use-chat";
 
 function ChatMessage({ message }: { message: TMessage }) {
   return (
@@ -59,6 +59,7 @@ function AssistantMessage({ message }: { message: TAssistantMessage }) {
 }
 
 function ToolCallMessage({ toolCall }: { toolCall: TToolCall }) {
+  const { chatSelectors } = useChat();
   const input = (() => {
     try {
       return JSON.parse(toolCall.function.arguments);
