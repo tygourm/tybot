@@ -4,12 +4,15 @@ import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
 import { LeftSidebar } from "@/components/organisms/left-sidebar";
 import { RightSidebar } from "@/components/organisms/right-sidebar";
+import { useTheme } from "@/components/providers/theme";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner";
 
 const Route = createRootRoute({ component: Root });
 
 function Root() {
+  const { theme } = useTheme();
+
   return (
     <>
       <SidebarProvider>
@@ -21,9 +24,9 @@ function Root() {
           <RightSidebar />
         </div>
       </SidebarProvider>
-      <Toaster richColors />
       <ReactQueryDevtools />
       <TanStackRouterDevtools />
+      <Toaster theme={theme} richColors />
     </>
   );
 }

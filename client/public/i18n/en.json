@@ -1,9 +1,36 @@
 {
   "chat": {
+    "abort": "Abort",
+    "attach": "Attach",
+    "parameters": "Parameters",
     "placeholder": "Ask a question",
     "run-started": "Run started",
     "run-finished": "Run finished",
-    "welcome": "What is the program today?"
+    "send": "Send",
+    "tools": "Tools",
+    "welcome": "What is the program today? "
+  },
+  "chat-attachements": {
+    "add-files": "Add files",
+    "description": "Attach files to the thread",
+    "limits": "Max {{files}} files Up to {{size}}",
+    "select-files": "Select files",
+    "remove-all": "Remove all",
+    "uploaded-files": "{{count}} files uploaded"
+  },
+  "chat-parameters": {
+    "description": "Adjust chat behavior and randomness",
+    "frequency-penalty": "🔁 Frequency Penalty",
+    "frequency-penalty-description": "Reduces repetition of the most used words",
+    "presence-penalty": "🌱 Presence Penalty",
+    "presence-penalty-description": "Encourages introduction of new topics",
+    "reset": "Reset",
+    "submit": "Submit",
+    "temperature": "🔥 Temperature",
+    "temperature-description": "Controls randomness for varied responses",
+    "top-p": "🎯 Top P",
+    "top-p-description": "Limits choices to the most probable tokens",
+    "updated": "Parameters updated"
   },
   "main-button": {
     "tooltip": "New chat"
