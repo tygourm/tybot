@@ -1,13 +1,14 @@
 import { Bot, SquarePen } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
 
 import { WithTooltip } from "@/components/atoms/with-tooltip";
 import { Button } from "@/components/ui/button";
+import { useChat } from "@/hooks/use-chat";
 
 function MainButton() {
   const { t } = useTranslation();
+  const { chatActions } = useChat();
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -15,9 +16,9 @@ function MainButton() {
       <Button
         size={"icon"}
         variant={"ghost"}
+        onClick={chatActions.newChat}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        onClick={() => toast.warning("Not implemented yet")}
       >
         {hovered ? <SquarePen /> : <Bot />}
       </Button>

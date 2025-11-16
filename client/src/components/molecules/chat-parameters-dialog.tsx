@@ -3,7 +3,6 @@ import { Settings } from "lucide-react";
 import { type Control, Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import * as z from "zod";
 
 import { WithTooltip } from "@/components/atoms/with-tooltip";
 import { Button } from "@/components/ui/button";
@@ -24,7 +23,11 @@ import {
 } from "@/components/ui/field";
 import { PromptInputButton } from "@/components/ui/shadcn-io/ai/prompt-input";
 import { Slider } from "@/components/ui/slider";
-import { logger } from "@/lib/logs";
+import {
+  type ChatParameters,
+  ChatParametersSchema,
+  useChat,
+} from "@/hooks/use-chat";
 
 interface SliderFieldProps {
   name: "temperature" | "topP" | "presencePenalty" | "frequencyPenalty";
@@ -80,26 +83,15 @@ export function SliderField({
 
 function ChatParametersDialog() {
   const { t } = useTranslation();
+  const { chatSelectors, chatActions } = useChat();
 
-  const formSchema = z.object({
-    temperature: z.number().min(0).max(2),
-    topP: z.number().min(0).max(1),
-    presencePenalty: z.number().min(-2).max(2),
-    frequencyPenalty: z.number().min(-2).max(2),
+  const form = useForm<ChatParameters>({
+    resolver: zodResolver(ChatParametersSchema),
+    defaultValues: chatSelectors.useParameters(),
   });
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      temperature: 1,
-      topP: 1,
-      presencePenalty: 0,
-      frequencyPenalty: 0,
-    },
-  });
-
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    logger.info(data);
+  const onSubmit = (data: ChatParameters) => {
+    chatActions.setParameters(data);
     toast.info(t("chat-parameters.updated"));
   };
 
