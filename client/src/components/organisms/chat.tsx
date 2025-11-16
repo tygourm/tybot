@@ -1,12 +1,14 @@
 "use client";
 
 import { HttpAgent, type UserMessage } from "@ag-ui/client";
-import { PaperclipIcon, Settings } from "lucide-react";
 import { type FormEvent, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
+import { WithTooltip } from "@/components/atoms/with-tooltip";
+import { ChatAttachementsDialog } from "@/components/molecules/chat-attachements-dialog";
 import { ChatMessage } from "@/components/molecules/chat-message";
+import { ChatParametersDialog } from "@/components/molecules/chat-parameters-dialog";
 import {
   Conversation,
   ConversationContent,
@@ -14,7 +16,6 @@ import {
 } from "@/components/ui/shadcn-io/ai/conversation";
 import {
   PromptInput,
-  PromptInputButton,
   PromptInputSubmit,
   PromptInputTextarea,
   PromptInputToolbar,
@@ -92,14 +93,12 @@ const Chat = () => {
 
   return (
     <div className="flex flex-col w-full h-screen justify-center pb-4">
-      {messages.length === 0 && (
+      {messages.length === 0 ? (
         <TypingText
-          showCursor={false}
           text={t("chat.welcome")}
           className="text-2xl mx-auto mb-4"
         />
-      )}
-      {messages.length > 0 && (
+      ) : (
         <Conversation>
           <ConversationContent className="p-0 px-4">
             {messages.map((m) => (
@@ -109,7 +108,7 @@ const Chat = () => {
           <ConversationScrollButton />
         </Conversation>
       )}
-      <PromptInput onSubmit={handleSubmit}>
+      <PromptInput className="bg-sidebar" onSubmit={handleSubmit}>
         <PromptInputTextarea
           value={input}
           placeholder={t("chat.placeholder")}
@@ -117,21 +116,15 @@ const Chat = () => {
         />
         <PromptInputToolbar>
           <PromptInputTools>
-            <PromptInputButton
-              onClick={() => toast.warning("Not implemented yet")}
-            >
-              <PaperclipIcon />
-            </PromptInputButton>
-            <PromptInputButton
-              onClick={() => toast.warning("Not implemented yet")}
-            >
-              <Settings />
-            </PromptInputButton>
+            <ChatAttachementsDialog />
+            <ChatParametersDialog />
           </PromptInputTools>
-          <PromptInputSubmit
-            disabled={!input.trim() && !running}
-            status={running ? "streaming" : "ready"}
-          />
+          <WithTooltip content={t(running ? "chat.abort" : "chat.send")}>
+            <PromptInputSubmit
+              disabled={!input.trim() && !running}
+              status={running ? "streaming" : "ready"}
+            />
+          </WithTooltip>
         </PromptInputToolbar>
       </PromptInput>
     </div>

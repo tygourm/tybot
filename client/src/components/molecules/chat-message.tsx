@@ -48,11 +48,13 @@ function AssistantMessage({ message }: { message: TAssistantMessage }) {
     return null;
 
   return (
-    <Message className="p-0 my-4" from="assistant">
-      <MessageContent>
-        <Response>{message.content}</Response>
-      </MessageContent>
-    </Message>
+    <>
+      <Message className="p-0 my-4" from="assistant">
+        <MessageContent>
+          <Response>{message.content}</Response>
+        </MessageContent>
+      </Message>
+    </>
   );
 }
 

@@ -7,7 +7,7 @@ const Route = createFileRoute("/")({ component: Index });
 function Index() {
   return (
     <div className="flex justify-center">
-      <div className="flex w-[50%] h-screen">
+      <div className={"flex w-[50%] h-screen"}>
         <Chat />
       </div>
     </div>

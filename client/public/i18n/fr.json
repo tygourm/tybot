@@ -1,9 +1,36 @@
 {
   "chat": {
+    "abort": "Interrompre",
+    "attach": "Joindre",
+    "parameters": "Paramètres",
     "placeholder": "Poser une question",
     "run-started": "Exécution commencée",
     "run-finished": "Exécution terminée",
-    "welcome": "Quel est le programme aujourd’hui ?"
+    "send": "Envoyer",
+    "tools": "Outils",
+    "welcome": "Quel est le programme aujourd’hui ? "
+  },
+  "chat-attachements": {
+    "add-files": "Ajouter des fichiers",
+    "description": "Joignez des fichiers à la conversation",
+    "limits": "Max {{files}} fichiers Jusqu’à {{size}}",
+    "select-files": "Choisir des fichiers",
+    "remove-all": "Tout supprimer",
+    "uploaded-files": "{{count}} fichiers envoyés"
+  },
+  "chat-parameters": {
+    "description": "Ajustez le comportement et l’aléa du chat",
+    "frequency-penalty": "🔁 Pénalité de fréquence",
+    "frequency-penalty-description": "Réduit la répétition des mots les plus utilisés",
+    "presence-penalty": "🌱 Pénalité de présence",
+    "presence-penalty-description": "Favorise l’introduction de nouveaux sujets",
+    "reset": "Réinitialiser",
+    "submit": "Valider",
+    "temperature": "🔥 Température",
+    "temperature-description": "Contrôle l’aléa pour des réponses variées",
+    "top-p": "🎯 Top P",
+    "top-p-description": "Limite les choix aux tokens les plus probables",
+    "updated": "Paramètres mis à jour"
   },
   "main-button": {
     "tooltip": "Nouveau chat"
