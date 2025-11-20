@@ -40,11 +40,11 @@ const store = new Store<ChatState>({
 });
 
 type ChatActions = {
-  setParameters: (p: ChatParameters) => void;
-  setInput: (v: string) => void;
-  setRunning: (v: boolean) => void;
-  setMessages: (m: Message[]) => void;
-  addMessage: (m: Message) => void;
+  setParameters: (parameters: ChatParameters) => void;
+  setInput: (input: string) => void;
+  setRunning: (running: boolean) => void;
+  setMessages: (messages: Message[]) => void;
+  addMessage: (message: Message) => void;
   addChunk: (id: string, delta: string) => void;
   newChat: () => void;
   runAgent: () => void;
@@ -67,32 +67,38 @@ const useChat = (): {
   const { t } = useTranslation();
   const actions: ChatActions = {} as ChatActions;
 
-  actions.setParameters = (p) =>
-    store.setState((s) => ({ ...s, parameters: p }));
+  actions.setParameters = (parameters: ChatParameters) =>
+    store.setState((prevState) => ({ ...prevState, parameters }));
 
-  actions.setInput = (v) => store.setState((s) => ({ ...s, input: v }));
+  actions.setInput = (input: string) =>
+    store.setState((prevState) => ({ ...prevState, input }));
 
-  actions.setRunning = (v) => store.setState((s) => ({ ...s, running: v }));
+  actions.setRunning = (running: boolean) =>
+    store.setState((prevState) => ({ ...prevState, running }));
 
-  actions.setMessages = (m) => store.setState((s) => ({ ...s, messages: m }));
+  actions.setMessages = (messages: Message[]) =>
+    store.setState((prevState) => ({ ...prevState, messages }));
 
-  actions.addMessage = (m) =>
-    store.setState((s) => ({ ...s, messages: [...s.messages, m] }));
+  actions.addMessage = (message: Message) =>
+    store.setState((prevState) => ({
+      ...prevState,
+      messages: [...prevState.messages, message],
+    }));
 
   actions.addChunk = (id, delta) =>
-    store.setState((s) => ({
-      ...s,
-      messages: s.messages.map((msg) =>
-        msg.id === id && msg.role === "assistant"
-          ? { ...msg, content: msg.content + delta }
-          : msg,
+    store.setState((prevState) => ({
+      ...prevState,
+      messages: prevState.messages.map((m) =>
+        m.id === id && m.role === "assistant"
+          ? { ...m, content: m.content + delta }
+          : m,
       ),
     }));
 
   actions.newChat = () => {
     if (store.state.running) actions.abortRun();
-    store.setState((s) => ({
-      ...s,
+    store.setState((prevState) => ({
+      ...prevState,
       input: "",
       running: false,
       threadId: crypto.randomUUID(),
@@ -113,7 +119,7 @@ const useChat = (): {
       threadId: store.state.threadId,
       debug: import.meta.env.DEV,
     });
-    store.setState((s) => ({ ...s, agent }));
+    store.setState((prevState) => ({ ...prevState, agent }));
     agent.runAgent(
       {
         runId: crypto.randomUUID(),
@@ -121,20 +127,29 @@ const useChat = (): {
       },
       {
         onRunStartedEvent() {
-          actions.setInput("");
-          actions.setRunning(true);
-          actions.addMessage(message);
+          store.setState((prevState) => ({
+            ...prevState,
+            input: "",
+            running: true,
+            messages: [...prevState.messages, message],
+          }));
           toast.info(t("chat.run-started"));
         },
         onRunFinishedEvent() {
-          actions.setRunning(false);
-          store.setState((s) => ({ ...s, agent: null }));
+          store.setState((prevState) => ({
+            ...prevState,
+            running: false,
+            agent: null,
+          }));
           toast.success(t("chat.run-finished"));
         },
         onRunErrorEvent({ event }) {
-          actions.setRunning(false);
+          store.setState((prevState) => ({
+            ...prevState,
+            running: false,
+            agent: null,
+          }));
           logger.error(event.type, event);
-          store.setState((s) => ({ ...s, agent: null }));
           toast.error(event.message || event.rawEvent.message);
         },
         onTextMessageStartEvent({ event }) {
@@ -156,18 +171,23 @@ const useChat = (): {
 
   actions.abortRun = () => {
     store.state.agent?.abortRun();
-    store.setState((s) => ({ ...s, agent: null }));
+    store.setState((prevState) => ({ ...prevState, agent: null }));
   };
 
   const selectors: ChatSelectors = {
-    useParameters: () => useStore(store, (s) => s.parameters),
-    useInput: () => useStore(store, (s) => s.input),
-    useRunning: () => useStore(store, (s) => s.running),
-    useThreadId: () => useStore(store, (s) => s.threadId),
-    useMessages: () => useStore(store, (s) => s.messages),
+    useParameters: () => useStore(store, (state) => state.parameters),
+
+    useInput: () => useStore(store, (state) => state.input),
+
+    useRunning: () => useStore(store, (state) => state.running),
+
+    useThreadId: () => useStore(store, (state) => state.threadId),
+
+    useMessages: () => useStore(store, (state) => state.messages),
+
     useToolMessage: (id) =>
-      useStore(store, (s) =>
-        s.messages
+      useStore(store, (state) =>
+        state.messages
           .filter((m) => m.role === "tool")
           .find((m) => m.toolCallId === id),
       ),

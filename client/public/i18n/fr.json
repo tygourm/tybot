@@ -8,15 +8,22 @@
     "run-finished": "Exécution terminée",
     "send": "Envoyer",
     "tools": "Outils",
-    "welcome": "Quel est le programme aujourd’hui ? "
+    "welcome": "Quel est le programme aujourd’hui ?"
   },
-  "chat-attachements": {
+  "chat-attachments": {
     "add-files": "Ajouter des fichiers",
     "description": "Joignez des fichiers à la conversation",
     "limits": "Max {{files}} fichiers Jusqu’à {{size}}",
     "select-files": "Choisir des fichiers",
     "remove-all": "Tout supprimer",
     "uploaded-files": "{{count}} fichiers envoyés"
+  },
+  "chat-message": {
+    "copy": "Copier",
+    "edit": "Modifier",
+    "negative": "Négatif",
+    "positive": "Positif",
+    "regenerate": "Régénérer"
   },
   "chat-parameters": {
     "description": "Ajustez le comportement et l’aléa du chat",

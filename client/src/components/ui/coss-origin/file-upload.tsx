@@ -81,7 +81,7 @@ function FileUpload() {
         data-dragging={isDragging || undefined}
         data-files={files.length > 0 || undefined}
         // className="flex min-h-56 flex-col items-center rounded-xl border border-dashed border-input p-4 transition-colors not-data-[files]:justify-center has-[input:focus]:border-ring has-[input:focus]:ring-[3px] has-[input:focus]:ring-ring/50 data-[dragging=true]:bg-accent/50"
-        className="flex flex-col items-center rounded-xl border border-dashed border-input p-4 transition-colors not-data-[files]:justify-center has-[input:focus]:border-ring has-[input:focus]:ring-[3px] has-[input:focus]:ring-ring/50 data-[dragging=true]:bg-accent/50"
+        className="flex flex-col items-center rounded-xl border border-dashed border-input p-4 transition-colors not-data-files:justify-center has-[input:focus]:border-ring has-[input:focus]:ring-[3px] has-[input:focus]:ring-ring/50 data-[dragging=true]:bg-accent/50"
       >
         <input
           {...getInputProps()}
@@ -92,7 +92,7 @@ function FileUpload() {
           <div className="flex w-full flex-col gap-3">
             <div className="flex items-center justify-between gap-2">
               <h3 className="truncate text-sm font-medium">
-                {t("chat-attachements.uploaded-files", {
+                {t("chat-attachments.uploaded-files", {
                   count: files.length,
                 })}
               </h3>
@@ -101,7 +101,7 @@ function FileUpload() {
                   className="-ms-0.5 size-3.5 opacity-60"
                   aria-hidden="true"
                 />
-                {t("chat-attachements.remove-all")}
+                {t("chat-attachments.remove-all")}
               </Button>
             </div>
             <div className="w-full space-y-2">
@@ -147,7 +147,7 @@ function FileUpload() {
                   onClick={openFileDialog}
                 >
                   <UploadIcon className="-ms-1 opacity-60" aria-hidden="true" />
-                  {t("chat-attachements.add-files")}
+                  {t("chat-attachments.add-files")}
                 </Button>
               )}
             </div>
@@ -155,14 +155,14 @@ function FileUpload() {
         ) : (
           <div className="flex flex-col items-center justify-center text-center">
             <p className="mb-2 text-sm font-medium">
-              {t("chat-attachements.limits", {
+              {t("chat-attachments.limits", {
                 files: maxFiles,
                 size: formatBytes(maxSize),
               })}
             </p>
             <Button variant="outline" onClick={openFileDialog}>
               <UploadIcon className="-ms-1 opacity-60" aria-hidden="true" />
-              {t("chat-attachements.select-files")}
+              {t("chat-attachments.select-files")}
             </Button>
           </div>
         )}

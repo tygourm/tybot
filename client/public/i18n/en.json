@@ -8,15 +8,22 @@
     "run-finished": "Run finished",
     "send": "Send",
     "tools": "Tools",
-    "welcome": "What is the program today? "
+    "welcome": "What is the program today?"
   },
-  "chat-attachements": {
+  "chat-attachments": {
     "add-files": "Add files",
     "description": "Attach files to the thread",
     "limits": "Max {{files}} files Up to {{size}}",
     "select-files": "Select files",
     "remove-all": "Remove all",
     "uploaded-files": "{{count}} files uploaded"
+  },
+  "chat-message": {
+    "copy": "Copy",
+    "edit": "Edit",
+    "negative": "Negative",
+    "positive": "Positive",
+    "regenerate": "Regenerate"
   },
   "chat-parameters": {
     "description": "Adjust chat behavior and randomness",

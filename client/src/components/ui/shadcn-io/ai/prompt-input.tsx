@@ -126,8 +126,7 @@ export const PromptInputButton = ({
     <Button
       className={cn(
         "shrink-0 gap-1.5 rounded-lg",
-        // variant === "ghost" && "text-muted-foreground",
-        variant === "ghost",
+        variant === "ghost" && "text-muted-foreground",
         newSize === "default" && "px-3",
         className,
       )}
@@ -191,7 +190,7 @@ export const PromptInputModelSelectTrigger = ({
   <SelectTrigger
     className={cn(
       "border-none bg-transparent font-medium text-muted-foreground shadow-none transition-colors",
-      'hover:bg-accent hover:text-foreground [&[aria-expanded="true"]]:bg-accent [&[aria-expanded="true"]]:text-foreground',
+      "hover:bg-accent hover:text-foreground aria-expanded:bg-accent aria-expanded:text-foreground",
       className,
     )}
     {...props}

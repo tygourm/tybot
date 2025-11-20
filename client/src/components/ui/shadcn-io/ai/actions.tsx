@@ -27,6 +27,7 @@ export type ActionProps = ComponentProps<typeof Button> & {
 export const Action = ({
   tooltip,
   children,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   label,
   className,
   variant = "ghost",
@@ -45,7 +46,7 @@ export const Action = ({
       {...props}
     >
       {children}
-      <span className="sr-only">{label || tooltip}</span>
+      {/* <span className="sr-only">{label || tooltip}</span> */}
     </Button>
   );
 
