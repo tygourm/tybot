@@ -4,7 +4,7 @@ import { type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 
 import { WithTooltip } from "@/components/atoms/with-tooltip";
-import { ChatAttachementsDialog } from "@/components/molecules/chat-attachements-dialog";
+import { ChatAttachmentsDialog } from "@/components/molecules/chat-attachments-dialog";
 import { ChatMessage } from "@/components/molecules/chat-message";
 import { ChatParametersDialog } from "@/components/molecules/chat-parameters-dialog";
 import {
@@ -37,15 +37,16 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen justify-center pb-4">
+    <div className="flex flex-col w-full h-full justify-center p-4 pt-0">
       {messages.length === 0 ? (
         <TypingText
+          showCursor={false}
           text={t("chat.welcome")}
           className="text-2xl mx-auto mb-4"
         />
       ) : (
         <Conversation>
-          <ConversationContent className="p-0 px-4">
+          <ConversationContent className="p-4 space-y-4 justify-around">
             {messages.map((m) => (
               <ChatMessage key={m.id} message={m} />
             ))}
@@ -61,7 +62,7 @@ const Chat = () => {
         />
         <PromptInputToolbar>
           <PromptInputTools>
-            <ChatAttachementsDialog />
+            <ChatAttachmentsDialog />
             <ChatParametersDialog />
           </PromptInputTools>
           <WithTooltip content={t(running ? "chat.abort" : "chat.send")}>

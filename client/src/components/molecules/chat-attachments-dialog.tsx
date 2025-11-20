@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { PromptInputButton } from "@/components/ui/shadcn-io/ai/prompt-input";
 
-function ChatAttachementsDialog() {
+function ChatAttachmentsDialog() {
   const { t } = useTranslation();
 
   return (
@@ -29,7 +29,7 @@ function ChatAttachementsDialog() {
         <DialogHeader>
           <DialogTitle>{t("chat.attach")}</DialogTitle>
           <DialogDescription>
-            {t("chat-attachements.description")}
+            {t("chat-attachments.description")}
           </DialogDescription>
         </DialogHeader>
         <FileUpload />
@@ -38,4 +38,4 @@ function ChatAttachementsDialog() {
   );
 }
 
-export { ChatAttachementsDialog };
+export { ChatAttachmentsDialog };

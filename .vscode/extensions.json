@@ -8,6 +8,7 @@
     "tamasfe.even-better-toml",
 
     // Optional
+    "bradlc.vscode-tailwindcss",
     "oderwat.indent-rainbow",
     "pkief.material-icon-theme",
     "seatonjiang.gitmoji-vscode",
