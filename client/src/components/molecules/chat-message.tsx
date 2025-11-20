@@ -89,6 +89,7 @@ function UserMessage({ message }: { message: TUserMessage }) {
 
 function AssistantMessage({ message }: { message: TAssistantMessage }) {
   const { t } = useTranslation();
+  const { chatActions } = useChat();
   const { copied, onCopy } = useCopy(
     typeof message.content === "string" ? message.content : "",
   );
@@ -115,7 +116,10 @@ function AssistantMessage({ message }: { message: TAssistantMessage }) {
         >
           <ThumbsDown fill={feedback === false ? "currentColor" : "none"} />
         </Action>
-        <Action tooltip={t("chat-message.regenerate")}>
+        <Action
+          tooltip={t("chat-message.regenerate")}
+          onClick={() => chatActions.regenerateMessage(message.id)}
+        >
           <RefreshCcw />
         </Action>
         <Action tooltip={t("chat-message.copy")} onClick={onCopy}>

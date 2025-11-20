@@ -1,4 +1,4 @@
-import { HttpAgent } from "@ag-ui/client";
+import { type AgentSubscriber, HttpAgent } from "@ag-ui/client";
 import type { Message, ToolMessage, UserMessage } from "@ag-ui/core";
 import { Store, useStore } from "@tanstack/react-store";
 import { useTranslation } from "react-i18next";
@@ -47,8 +47,9 @@ type ChatActions = {
   addMessage: (message: Message) => void;
   addChunk: (id: string, delta: string) => void;
   newChat: () => void;
-  runAgent: () => void;
   abortRun: () => void;
+  runAgent: () => void;
+  regenerateMessage: (id: string) => void;
 };
 
 type ChatSelectors = {
@@ -85,7 +86,7 @@ const useChat = (): {
       messages: [...prevState.messages, message],
     }));
 
-  actions.addChunk = (id, delta) =>
+  actions.addChunk = (id: string, delta: string) =>
     store.setState((prevState) => ({
       ...prevState,
       messages: prevState.messages.map((m) =>
@@ -107,6 +108,11 @@ const useChat = (): {
     }));
   };
 
+  actions.abortRun = () => {
+    store.state.agent?.abortRun();
+    store.setState((prevState) => ({ ...prevState, agent: null }));
+  };
+
   actions.runAgent = () => {
     const message: UserMessage = {
       content: store.state.input,
@@ -119,59 +125,43 @@ const useChat = (): {
       threadId: store.state.threadId,
       debug: import.meta.env.DEV,
     });
+    store.setState((prevState) => ({
+      ...prevState,
+      messages: [...store.state.messages, message],
+      agent,
+    }));
+    agent.runAgent(
+      {
+        runId: crypto.randomUUID(),
+        abortController: new AbortController(),
+      },
+      subscriber,
+    );
+  };
+
+  actions.regenerateMessage = (id: string) => {
+    const index = store.state.messages.findIndex((m) => m.id === id);
+    if (index === -1 || store.state.messages[index].role !== "assistant")
+      return;
+
+    let keepUntil = index - 1;
+    while (store.state.messages[keepUntil].role !== "user") keepUntil--;
+
+    actions.setMessages(store.state.messages.slice(0, keepUntil + 1));
+    const agent = new HttpAgent({
+      url: `${import.meta.env.SERVER_URL}/api/agents/run`,
+      initialMessages: store.state.messages,
+      threadId: store.state.threadId,
+      debug: import.meta.env.DEV,
+    });
     store.setState((prevState) => ({ ...prevState, agent }));
     agent.runAgent(
       {
         runId: crypto.randomUUID(),
         abortController: new AbortController(),
       },
-      {
-        onRunStartedEvent() {
-          store.setState((prevState) => ({
-            ...prevState,
-            input: "",
-            running: true,
-            messages: [...prevState.messages, message],
-          }));
-          toast.info(t("chat.run-started"));
-        },
-        onRunFinishedEvent() {
-          store.setState((prevState) => ({
-            ...prevState,
-            running: false,
-            agent: null,
-          }));
-          toast.success(t("chat.run-finished"));
-        },
-        onRunErrorEvent({ event }) {
-          store.setState((prevState) => ({
-            ...prevState,
-            running: false,
-            agent: null,
-          }));
-          logger.error(event.type, event);
-          toast.error(event.message || event.rawEvent.message);
-        },
-        onTextMessageStartEvent({ event }) {
-          actions.addMessage({
-            id: event.messageId,
-            role: event.role,
-            content: "",
-          });
-        },
-        onTextMessageContentEvent({ event }) {
-          actions.addChunk(event.messageId, event.delta);
-        },
-        onMessagesSnapshotEvent({ event }) {
-          actions.setMessages(event.messages);
-        },
-      },
+      subscriber,
     );
-  };
-
-  actions.abortRun = () => {
-    store.state.agent?.abortRun();
-    store.setState((prevState) => ({ ...prevState, agent: null }));
   };
 
   const selectors: ChatSelectors = {
@@ -191,6 +181,50 @@ const useChat = (): {
           .filter((m) => m.role === "tool")
           .find((m) => m.toolCallId === id),
       ),
+  };
+
+  const subscriber: AgentSubscriber = {
+    onRunStartedEvent({ event }) {
+      store.setState((prevState) => ({
+        ...prevState,
+        input: "",
+        running: true,
+      }));
+      toast.info(t("chat.run-started"));
+      logger.info(event.type, store.state);
+    },
+    onRunFinishedEvent({ event }) {
+      store.setState((prevState) => ({
+        ...prevState,
+        running: false,
+        agent: null,
+      }));
+      toast.success(t("chat.run-finished"));
+      logger.success(event.type, store.state);
+    },
+    onRunErrorEvent({ event }) {
+      store.setState((prevState) => ({
+        ...prevState,
+        running: false,
+        agent: null,
+      }));
+      logger.error(event.type, event);
+      toast.error(event.message || event.rawEvent.message);
+    },
+    onTextMessageStartEvent({ event }) {
+      actions.addMessage({
+        id: event.messageId,
+        role: event.role,
+        content: "",
+      });
+    },
+    onTextMessageContentEvent({ event }) {
+      actions.addChunk(event.messageId, event.delta);
+    },
+    onMessagesSnapshotEvent({ event }) {
+      logger.info(event.type, event);
+      actions.setMessages(event.messages);
+    },
   };
 
   return { chatActions: actions, chatSelectors: selectors };
