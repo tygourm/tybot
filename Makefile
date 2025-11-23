@@ -36,7 +36,7 @@ write: init
 
 check: init
 	pnpm prettier -c . && pnpm -r exec eslint --fix
-	uv run ruff check --fix --no-cache && uv run mypy .
+	uv run ruff check --fix --no-cache && uv run ty check
 
 clean:
 	rm -rf .venv/

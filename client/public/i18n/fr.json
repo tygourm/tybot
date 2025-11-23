@@ -19,11 +19,14 @@
     "uploaded-files": "{{count}} fichiers envoyés"
   },
   "chat-message": {
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
     "copy": "Copier",
-    "edit": "Modifier",
+    "delete": "Supprimer",
     "negative": "Négatif",
     "positive": "Positif",
-    "regenerate": "Régénérer"
+    "regenerate": "Régénérer",
+    "update": "Modifier"
   },
   "chat-parameters": {
     "description": "Ajustez le comportement et l’aléa du chat",

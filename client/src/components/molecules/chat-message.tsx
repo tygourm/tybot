@@ -11,10 +11,12 @@ import {
   RefreshCcw,
   ThumbsDown,
   ThumbsUp,
+  Trash,
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import { Button } from "@/components/ui/button";
 import { Action, Actions } from "@/components/ui/shadcn-io/ai/actions";
 import { Message, MessageContent } from "@/components/ui/shadcn-io/ai/message";
 import { Response } from "@/components/ui/shadcn-io/ai/response";
@@ -25,6 +27,7 @@ import {
   ToolInput,
   ToolOutput,
 } from "@/components/ui/shadcn-io/ai/tool";
+import { Textarea } from "@/components/ui/textarea";
 import { useChat } from "@/hooks/use-chat";
 
 const useCopy = (content: string, timeout: number = 2000) => {
@@ -66,18 +69,63 @@ function ChatMessage({ message }: { message: TMessage }) {
 
 function UserMessage({ message }: { message: TUserMessage }) {
   const { t } = useTranslation();
+  const [content, setContent] = useState("");
+  const [editing, setEditing] = useState(false);
   const { copied, onCopy } = useCopy(
     typeof message.content === "string" ? message.content : "",
   );
+  const { chatActions, chatSelectors } = useChat();
+  const running = chatSelectors.useRunning();
 
   if (typeof message.content !== "string") return null;
 
   return (
     <Message className="flex-col p-0" from="user">
-      <MessageContent className="">{message.content}</MessageContent>
+      {editing ? (
+        <div className="flex flex-col gap-2 w-full">
+          <Textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+          />
+          <div className="flex gap-2 justify-end">
+            <Button
+              variant={"outline"}
+              onClick={() => {
+                setContent("");
+                setEditing(false);
+              }}
+            >
+              {t("chat-message.cancel")}
+            </Button>
+            <Button
+              disabled={running || content.trim() === ""}
+              onClick={() => {
+                chatActions.updateMessage(message.id, content);
+                setContent("");
+                setEditing(false);
+              }}
+            >
+              {t("chat-message.confirm")}
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <MessageContent className="">{message.content}</MessageContent>
+      )}
       <Actions>
-        <Action tooltip={t("chat-message.edit")}>
+        <Action
+          disabled={running}
+          tooltip={t("chat-message.update")}
+          onClick={() => setEditing(!editing)}
+        >
           <Pencil />
+        </Action>
+        <Action
+          disabled={running}
+          tooltip={t("chat-message.delete")}
+          onClick={() => chatActions.deleteMessage(message.id)}
+        >
+          <Trash />
         </Action>
         <Action tooltip={t("chat-message.copy")} onClick={onCopy}>
           {copied ? <Check /> : <Copy />}
@@ -89,11 +137,12 @@ function UserMessage({ message }: { message: TUserMessage }) {
 
 function AssistantMessage({ message }: { message: TAssistantMessage }) {
   const { t } = useTranslation();
-  const { chatActions } = useChat();
   const { copied, onCopy } = useCopy(
     typeof message.content === "string" ? message.content : "",
   );
   const { feedback, onFeedback } = useFeedback();
+  const { chatActions, chatSelectors } = useChat();
+  const running = chatSelectors.useRunning();
 
   if (typeof message.content !== "string" || message.content.length === 0)
     return null;
@@ -117,6 +166,7 @@ function AssistantMessage({ message }: { message: TAssistantMessage }) {
           <ThumbsDown fill={feedback === false ? "currentColor" : "none"} />
         </Action>
         <Action
+          disabled={running}
           tooltip={t("chat-message.regenerate")}
           onClick={() => chatActions.regenerateMessage(message.id)}
         >

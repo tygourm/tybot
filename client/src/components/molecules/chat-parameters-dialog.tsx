@@ -91,8 +91,8 @@ function ChatParametersDialog() {
   });
 
   const onSubmit = (data: ChatParameters) => {
-    chatActions.setParameters(data);
     toast.info(t("chat-parameters.updated"));
+    chatActions.setChatState({ parameters: data });
   };
 
   return (

@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING
+from uuid import UUID
 
 from ag_ui_langgraph import LangGraphAgent
 from langchain.agents import create_agent
@@ -22,4 +23,4 @@ def build_agent(run_id: str) -> LangGraphAgent:
         debug=settings.dev,
         checkpointer=InMemorySaver(),
     )
-    return LangGraphAgent(name="Chat", graph=graph, config={"run_id": run_id})
+    return LangGraphAgent(name="Chat", graph=graph, config={"run_id": UUID(run_id)})

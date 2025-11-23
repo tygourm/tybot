@@ -16,7 +16,7 @@ function Root() {
   return (
     <>
       <SidebarProvider>
-        <div className="flex w-screen h-screen overflow-hidden">
+        <div className="flex w-full h-screen">
           <LeftSidebar />
           <main className="flex-1 h-full overflow-auto">
             <Outlet />

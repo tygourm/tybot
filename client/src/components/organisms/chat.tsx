@@ -46,7 +46,7 @@ const Chat = () => {
         />
       ) : (
         <Conversation>
-          <ConversationContent className="p-4 space-y-4 justify-around">
+          <ConversationContent className="p-4 space-y-4">
             {messages.map((m) => (
               <ChatMessage key={m.id} message={m} />
             ))}
@@ -58,7 +58,7 @@ const Chat = () => {
         <PromptInputTextarea
           value={input}
           placeholder={t("chat.placeholder")}
-          onChange={(e) => chatActions.setInput(e.target.value)}
+          onChange={(e) => chatActions.setChatState({ input: e.target.value })}
         />
         <PromptInputToolbar>
           <PromptInputTools>

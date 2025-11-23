@@ -4,11 +4,7 @@ version = "0.0.0"
 requires-python = ">=3.12"
 
 [dependency-groups]
-dev = ["mypy", "ruff"]
-
-[tool.mypy]
-cache_dir = "/dev/null"
-disable_error_code = ["import-untyped"]
+dev = ["ruff", "ty"]
 
 [tool.ruff.lint]
 select = ["ALL"]
