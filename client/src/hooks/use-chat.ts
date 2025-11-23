@@ -40,15 +40,14 @@ const store = new Store<ChatState>({
 });
 
 type ChatActions = {
-  setParameters: (parameters: ChatParameters) => void;
-  setInput: (input: string) => void;
-  setRunning: (running: boolean) => void;
-  setMessages: (messages: Message[]) => void;
+  setChatState: (state: Partial<ChatState>) => void;
   addMessage: (message: Message) => void;
   addChunk: (id: string, delta: string) => void;
   newChat: () => void;
   abortRun: () => void;
   runAgent: () => void;
+  deleteMessage: (id: string) => void;
+  updateMessage: (id: string, content: string) => void;
   regenerateMessage: (id: string) => void;
 };
 
@@ -68,17 +67,8 @@ const useChat = (): {
   const { t } = useTranslation();
   const actions: ChatActions = {} as ChatActions;
 
-  actions.setParameters = (parameters: ChatParameters) =>
-    store.setState((prevState) => ({ ...prevState, parameters }));
-
-  actions.setInput = (input: string) =>
-    store.setState((prevState) => ({ ...prevState, input }));
-
-  actions.setRunning = (running: boolean) =>
-    store.setState((prevState) => ({ ...prevState, running }));
-
-  actions.setMessages = (messages: Message[]) =>
-    store.setState((prevState) => ({ ...prevState, messages }));
+  actions.setChatState = (state: Partial<ChatState>) =>
+    store.setState((prevState) => ({ ...prevState, ...state }));
 
   actions.addMessage = (message: Message) =>
     store.setState((prevState) => ({
@@ -98,19 +88,18 @@ const useChat = (): {
 
   actions.newChat = () => {
     if (store.state.running) actions.abortRun();
-    store.setState((prevState) => ({
-      ...prevState,
+    actions.setChatState({
       input: "",
       running: false,
       threadId: crypto.randomUUID(),
       messages: [],
       agent: null,
-    }));
+    });
   };
 
   actions.abortRun = () => {
     store.state.agent?.abortRun();
-    store.setState((prevState) => ({ ...prevState, agent: null }));
+    actions.setChatState({ running: false, agent: null });
   };
 
   actions.runAgent = () => {
@@ -139,15 +128,49 @@ const useChat = (): {
     );
   };
 
+  actions.deleteMessage = (id: string) => {
+    const index = store.state.messages.findIndex((m) => m.id === id);
+    if (index === -1 || store.state.messages[index].role !== "user") return;
+    actions.setChatState({ messages: store.state.messages.slice(0, index) });
+  };
+
+  actions.updateMessage = (id: string, content: string) => {
+    const index = store.state.messages.findIndex((m) => m.id === id);
+    if (index === -1 || store.state.messages[index].role !== "user") return;
+    actions.setChatState({
+      messages: [
+        ...store.state.messages.slice(0, index),
+        { ...store.state.messages[index], content },
+      ],
+    });
+
+    const agent = new HttpAgent({
+      url: `${import.meta.env.SERVER_URL}/api/agents/run`,
+      initialMessages: store.state.messages,
+      threadId: store.state.threadId,
+      debug: import.meta.env.DEV,
+    });
+    store.setState((prevState) => ({ ...prevState, agent }));
+    agent.runAgent(
+      {
+        runId: crypto.randomUUID(),
+        abortController: new AbortController(),
+      },
+      subscriber,
+    );
+  };
+
   actions.regenerateMessage = (id: string) => {
     const index = store.state.messages.findIndex((m) => m.id === id);
     if (index === -1 || store.state.messages[index].role !== "assistant")
       return;
-
     let keepUntil = index - 1;
     while (store.state.messages[keepUntil].role !== "user") keepUntil--;
+    if (keepUntil === -1) return;
+    actions.setChatState({
+      messages: store.state.messages.slice(0, keepUntil + 1),
+    });
 
-    actions.setMessages(store.state.messages.slice(0, keepUntil + 1));
     const agent = new HttpAgent({
       url: `${import.meta.env.SERVER_URL}/api/agents/run`,
       initialMessages: store.state.messages,
@@ -185,31 +208,19 @@ const useChat = (): {
 
   const subscriber: AgentSubscriber = {
     onRunStartedEvent({ event }) {
-      store.setState((prevState) => ({
-        ...prevState,
-        input: "",
-        running: true,
-      }));
+      logger.info(event.type, event);
       toast.info(t("chat.run-started"));
-      logger.info(event.type, store.state);
+      actions.setChatState({ input: "", running: true });
     },
     onRunFinishedEvent({ event }) {
-      store.setState((prevState) => ({
-        ...prevState,
-        running: false,
-        agent: null,
-      }));
+      logger.success(event.type, event);
       toast.success(t("chat.run-finished"));
-      logger.success(event.type, store.state);
+      actions.setChatState({ running: false, agent: null });
     },
     onRunErrorEvent({ event }) {
-      store.setState((prevState) => ({
-        ...prevState,
-        running: false,
-        agent: null,
-      }));
       logger.error(event.type, event);
       toast.error(event.message || event.rawEvent.message);
+      actions.setChatState({ running: false, agent: null });
     },
     onTextMessageStartEvent({ event }) {
       actions.addMessage({
@@ -223,7 +234,7 @@ const useChat = (): {
     },
     onMessagesSnapshotEvent({ event }) {
       logger.info(event.type, event);
-      actions.setMessages(event.messages);
+      actions.setChatState({ messages: event.messages });
     },
   };
 

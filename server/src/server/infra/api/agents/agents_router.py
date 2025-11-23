@@ -1,4 +1,7 @@
+from collections.abc import AsyncGenerator
+
 from ag_ui.core import RunAgentInput
+from ag_ui.encoder import EventEncoder
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 
@@ -9,5 +12,11 @@ router = APIRouter()
 
 @router.post("/run")
 def run_agent(body: RunAgentInput) -> StreamingResponse:
+    encoder = EventEncoder()
     run_agent = injector.run_react_agent(body.run_id)
-    return StreamingResponse(run_agent(body))
+
+    async def event_stream() -> AsyncGenerator[str, None]:
+        async for event in run_agent(body):
+            yield encoder.encode(event)  # ty: ignore[invalid-argument-type]
+
+    return StreamingResponse(event_stream(), media_type=encoder.get_content_type())

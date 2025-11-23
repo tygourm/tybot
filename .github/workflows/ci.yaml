@@ -22,7 +22,7 @@ jobs:
       - run: |
           uv sync --all-packages --frozen
           uv run ruff check --no-cache
-          uv run mypy .
+          uv run ty check
 
   build-js:
     runs-on: ubuntu-latest

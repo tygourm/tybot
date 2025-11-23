@@ -19,11 +19,14 @@
     "uploaded-files": "{{count}} files uploaded"
   },
   "chat-message": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
     "copy": "Copy",
-    "edit": "Edit",
+    "delete": "Delete",
     "negative": "Negative",
     "positive": "Positive",
-    "regenerate": "Regenerate"
+    "regenerate": "Regenerate",
+    "update": "Update"
   },
   "chat-parameters": {
     "description": "Adjust chat behavior and randomness",
