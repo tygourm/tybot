@@ -20,9 +20,10 @@ class Settings(BaseSettings):
     logs_backup_count: int = 10
     logs_max_bytes: int = 10 * 1024 * 1024
 
+    tavily_api_key: str | None = None
     ollama_base_url: str = "http://localhost:11434"
 
-    model_config = SettingsConfigDict()
+    model_config = SettingsConfigDict(env_file=".env")
 
 
 settings = Settings()
