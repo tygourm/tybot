@@ -10,6 +10,7 @@ dependencies = [
     "ag-ui-langgraph",
     "fastapi[standard]",
     "langchain-ollama",
+    "langchain-tavily",
     "pydantic-settings",
 ]
 

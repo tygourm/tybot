@@ -192,7 +192,7 @@ function ToolCallMessage({ toolCall }: { toolCall: TToolCall }) {
   const output = chatSelectors.useToolMessage(toolCall.id);
 
   return (
-    <Tool key={toolCall.id} defaultOpen={true}>
+    <Tool key={toolCall.id}>
       <ToolHeader
         className="group"
         type={`tool-${toolCall.function.name}`}
