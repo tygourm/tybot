@@ -29,18 +29,7 @@ import {
 } from "@/components/ui/shadcn-io/ai/tool";
 import { Textarea } from "@/components/ui/textarea";
 import { useChat } from "@/hooks/use-chat";
-
-const useCopy = (content: string, timeout: number = 2000) => {
-  const [copied, setCopied] = useState(false);
-  const onCopy = async () => {
-    if (copied) return;
-    setCopied(true);
-    await navigator.clipboard.writeText(content);
-    const id = setTimeout(() => setCopied(false), timeout);
-    return () => clearTimeout(id);
-  };
-  return { copied, onCopy };
-};
+import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 
 const useFeedback = () => {
   const [feedback, setFeedback] = useState<boolean | null>(null);
@@ -71,9 +60,7 @@ function UserMessage({ message }: { message: TUserMessage }) {
   const { t } = useTranslation();
   const [content, setContent] = useState("");
   const [editing, setEditing] = useState(false);
-  const { copied, onCopy } = useCopy(
-    typeof message.content === "string" ? message.content : "",
-  );
+  const [copy, isCopied] = useCopyToClipboard();
   const { chatActions, chatSelectors } = useChat();
   const running = chatSelectors.useRunning();
 
@@ -127,8 +114,13 @@ function UserMessage({ message }: { message: TUserMessage }) {
         >
           <Trash />
         </Action>
-        <Action tooltip={t("chat-message.copy")} onClick={onCopy}>
-          {copied ? <Check /> : <Copy />}
+        <Action
+          tooltip={t("chat-message.copy")}
+          onClick={() =>
+            copy(typeof message.content === "string" ? message.content : "")
+          }
+        >
+          {isCopied ? <Check /> : <Copy />}
         </Action>
       </Actions>
     </Message>
@@ -137,9 +129,7 @@ function UserMessage({ message }: { message: TUserMessage }) {
 
 function AssistantMessage({ message }: { message: TAssistantMessage }) {
   const { t } = useTranslation();
-  const { copied, onCopy } = useCopy(
-    typeof message.content === "string" ? message.content : "",
-  );
+  const [copy, isCopied] = useCopyToClipboard();
   const { feedback, onFeedback } = useFeedback();
   const { chatActions, chatSelectors } = useChat();
   const running = chatSelectors.useRunning();
@@ -172,8 +162,13 @@ function AssistantMessage({ message }: { message: TAssistantMessage }) {
         >
           <RefreshCcw />
         </Action>
-        <Action tooltip={t("chat-message.copy")} onClick={onCopy}>
-          {copied ? <Check /> : <Copy />}
+        <Action
+          tooltip={t("chat-message.copy")}
+          onClick={() =>
+            copy(typeof message.content === "string" ? message.content : "")
+          }
+        >
+          {isCopied ? <Check /> : <Copy />}
         </Action>
       </Actions>
     </Message>
