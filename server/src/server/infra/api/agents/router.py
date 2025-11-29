@@ -13,7 +13,7 @@ router = APIRouter()
 @router.post("/run")
 def run_agent(body: RunAgentInput) -> StreamingResponse:
     encoder = EventEncoder()
-    run_agent = injector.run_chat_agent(body.run_id)
+    run_agent = injector.run_chat_agent()
 
     async def event_stream() -> AsyncGenerator[str, None]:
         async for event in run_agent(body):

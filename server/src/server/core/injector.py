@@ -4,8 +4,8 @@ from server.core.settings import settings
 
 
 class Injector:
-    def run_chat_agent(self, run_id: str) -> RunAgent:
-        return RunAgent(build_chat_agent(run_id, debug=settings.dev))
+    def run_chat_agent(self) -> RunAgent:
+        return RunAgent(build_chat_agent(debug=settings.dev))
 
 
 injector = Injector()

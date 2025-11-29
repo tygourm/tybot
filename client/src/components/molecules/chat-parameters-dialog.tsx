@@ -67,7 +67,7 @@ export function SliderField({
           <div className="flex flex-row gap-2 items-center">
             {min}
             <Slider
-              value={[field.value]}
+              value={[field.value || 0]}
               onValueChange={(value) => field.onChange(value[0])}
               min={min}
               max={max}
