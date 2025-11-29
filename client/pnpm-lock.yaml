@@ -15,7 +15,7 @@ importers:
         version: 0.0.41
       "@hookform/resolvers":
         specifier: ^5.2.2
-        version: 5.2.2(react-hook-form@7.66.1(react@19.2.0))
+        version: 5.2.2(react-hook-form@7.67.0(react@19.2.0))
       "@icons-pack/react-simple-icons":
         specifier: ^13.8.0
         version: 13.8.0(react@19.2.0)
@@ -146,8 +146,8 @@ importers:
         specifier: ^3.13.0
         version: 3.13.0
       harden-react-markdown:
-        specifier: ^1.1.5
-        version: 1.1.5(react-markdown@10.1.0(@types/react@19.2.7)(react@19.2.0))(react@19.2.0)
+        specifier: ^1.1.6
+        version: 1.1.6(react-markdown@10.1.0(@types/react@19.2.7)(react@19.2.0))(react@19.2.0)
       i18next:
         specifier: ^25.6.3
         version: 25.6.3(typescript@5.9.3)
@@ -176,14 +176,14 @@ importers:
         specifier: ^19.2.0
         version: 19.2.0
       react-day-picker:
-        specifier: ^9.11.2
-        version: 9.11.2(react@19.2.0)
+        specifier: ^9.11.3
+        version: 9.11.3(react@19.2.0)
       react-dom:
         specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
       react-hook-form:
-        specifier: ^7.66.1
-        version: 7.66.1(react@19.2.0)
+        specifier: ^7.67.0
+        version: 7.67.0(react@19.2.0)
       react-i18next:
         specifier: ^16.3.5
         version: 16.3.5(i18next@25.6.3(typescript@5.9.3))(react-dom@19.2.0(react@19.2.0))(react@19.2.0)(typescript@5.9.3)
@@ -3797,10 +3797,10 @@ packages:
         integrity: sha512-QL7MJ2WMjm1PHWsoFrAQH/J8wUeqZvMtHO58qdekHpCfhvhSL4gSiz6vJf5EeMP0LOn3ZCprL2ki/gjED8ghVw==,
       }
 
-  harden-react-markdown@1.1.5:
+  harden-react-markdown@1.1.6:
     resolution:
       {
-        integrity: sha512-u0OFAPakA/FE9ZCOgUakvB55ygfHiK0grQgKdztcTe73d6Dz/6Flz04hv6pPq7zzZYAgjeEZQwR2zQYifC0NVQ==,
+        integrity: sha512-qA5Kcpz9QSFm9OMKyjwSU5DneHM9OoyRMlczpsMjTnbDQ9PlQAdsCFWMwLRwqWX9BcEn4sqltx7s0tEbuGpIxg==,
       }
     peerDependencies:
       react: ">=16.8.0"
@@ -3870,6 +3870,12 @@ packages:
         integrity: sha512-wkQCkSYoOGCRKERFWcxMVMOcYE2K1AaNLU8DXS9arxnLOUEWbOXKXiJUNzEpqZ3JOKpnha3jkFrumEjVliDe7A==,
       }
 
+  hast-util-raw@9.1.0:
+    resolution:
+      {
+        integrity: sha512-Y8/SBAHkZGoNkpzqqfCldijcuUKh7/su31kEBp67cFY09Wy0mTRgtsLYsiIxMJxlu0f6AA5SUTbDR8K0rxnbUw==,
+      }
+
   hast-util-to-html@9.0.5:
     resolution:
       {
@@ -3880,6 +3886,12 @@ packages:
     resolution:
       {
         integrity: sha512-zl6s8LwNyo1P9uw+XJGvZtdFF1GdAkOg8ujOw+4Pyb76874fLps4ueHXDhXWdk6YHQ6OgUtinliG7RsYvCbbBg==,
+      }
+
+  hast-util-to-parse5@8.0.0:
+    resolution:
+      {
+        integrity: sha512-3KKrV5ZVI8if87DVSi1vDeByYrkGzg4mEfeu4alwgmmIeARiBLKCZS2uw5Gb6nU9x9Yufyj3iudm6i7nl52PFw==,
       }
 
   hast-util-to-text@4.0.2:
@@ -4866,10 +4878,10 @@ packages:
       }
     engines: { node: ">= 0.8.0" }
 
-  prettier@3.7.1:
+  prettier@3.7.2:
     resolution:
       {
-        integrity: sha512-RWKXE4qB3u5Z6yz7omJkjWwmTfLdcbv44jUVHC5NpfXwFGzvpQM798FGv/6WNK879tc+Cn0AAyherCl1KjbyZQ==,
+        integrity: sha512-n3HV2J6QhItCXndGa3oMWvWFAgN1ibnS7R9mt6iokScBOC0Ul9/iZORmU2IWUMcyAQaMPjTlY3uT34TqocUxMA==,
       }
     engines: { node: ">=14" }
     hasBin: true
@@ -4885,6 +4897,12 @@ packages:
     resolution:
       {
         integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==,
+      }
+
+  property-information@6.5.0:
+    resolution:
+      {
+        integrity: sha512-PgTgs/BlvHxOu8QuEN7wi5A0OmXaBcHpmCSTehcs6Uuu9IkDIEo13Hy7n898RHfrQ49vKCoGeWZSaAK01nwVig==,
       }
 
   property-information@7.1.0:
@@ -4906,10 +4924,10 @@ packages:
       }
     engines: { node: ">=6" }
 
-  react-day-picker@9.11.2:
+  react-day-picker@9.11.3:
     resolution:
       {
-        integrity: sha512-TD/xMUGg2oiKX8jUR21MST5pj+7Y36097YtnDHQFlIcZOu3mbLLw2B2JqEByEGrR3HHveWYnKlyls6WqJgohAg==,
+        integrity: sha512-7lD12UvGbkyXqgzbYIGQTbl+x29B9bAf+k0pP5Dcs1evfpKk6zv4EdH/edNc8NxcmCiTNXr2HIYPrSZ3XvmVBg==,
       }
     engines: { node: ">=18" }
     peerDependencies:
@@ -4923,10 +4941,10 @@ packages:
     peerDependencies:
       react: ^19.2.0
 
-  react-hook-form@7.66.1:
+  react-hook-form@7.67.0:
     resolution:
       {
-        integrity: sha512-2KnjpgG2Rhbi+CIiIBQQ9Df6sMGH5ExNyFl4Hw9qO7pIqMBR8Bvu9RQyjl3JM4vehzCh9soiNUM/xYMswb2EiA==,
+        integrity: sha512-E55EOwKJHHIT/I6J9DmQbCWToAYSw9nN5R57MZw9rMtjh+YQreMDxRLfdjfxQbiJ3/qbg3Z02wGzBX4M+5fMtQ==,
       }
     engines: { node: ">=18.0.0" }
     peerDependencies:
@@ -4992,10 +5010,10 @@ packages:
       "@types/react":
         optional: true
 
-  react-remove-scroll@2.7.1:
+  react-remove-scroll@2.7.2:
     resolution:
       {
-        integrity: sha512-HpMh8+oahmIdOuS5aFKKY6Pyog+FNaZV/XyJOq7b4YFwsFHe5yYfdbIalI4k3vU2nSDql7YskmUseHsRrJqIPA==,
+        integrity: sha512-Iqb9NjCCTt6Hf+vOdNIZGdTiH1QSqr27H/Ek9sv/a97gfueI/5h1s3yRi1nngzMUaOOToin5dI1dXKdXiF+u0Q==,
       }
     engines: { node: ">=10" }
     peerDependencies:
@@ -5115,16 +5133,22 @@ packages:
         integrity: sha512-uorlqlzAKjKQZ5P+kTJr3eeJGSVroLKoHmquUj4zHWuR+hEyNqlXsSKlYYF5F4NI6nl7tWCs0apKJ0lmfsXAPA==,
       }
 
-  rehype-harden@1.1.5:
+  rehype-harden@1.1.6:
     resolution:
       {
-        integrity: sha512-JrtBj5BVd/5vf3H3/blyJatXJbzQfRT9pJBmjafbTaPouQCAKxHwRyCc7dle9BXQKxv4z1OzZylz/tNamoiG3A==,
+        integrity: sha512-5WyX6BFEWYmmbCF/S2gNRklfgPGTiGjviAjbseO4XlpqEilWBkvWwve6uU/JB3C0JvG/qxCZa3rBn8+ajy4i/A==,
       }
 
   rehype-katex@7.0.1:
     resolution:
       {
         integrity: sha512-OiM2wrZ/wuhKkigASodFoo8wimG3H12LWQaH8qSPVJn9apWKFSH3YOCtbKpBorTVw/eI7cuT21XBbvwEswbIOA==,
+      }
+
+  rehype-raw@7.0.0:
+    resolution:
+      {
+        integrity: sha512-/aE8hCfKlQeA8LmyeyQvQF3eBiLRGNlfBJEvWH7ivp9sBqs7TNqBL5X3v157rM4IFETqDnIOO+z5M/biZbo9Ww==,
       }
 
   remark-gfm@4.0.1:
@@ -6271,10 +6295,10 @@ snapshots:
 
   "@floating-ui/utils@0.2.10": {}
 
-  "@hookform/resolvers@5.2.2(react-hook-form@7.66.1(react@19.2.0))":
+  "@hookform/resolvers@5.2.2(react-hook-form@7.67.0(react@19.2.0))":
     dependencies:
       "@standard-schema/utils": 0.3.0
-      react-hook-form: 7.66.1(react@19.2.0)
+      react-hook-form: 7.67.0(react@19.2.0)
 
   "@humanfs/core@0.19.1": {}
 
@@ -6484,7 +6508,7 @@ snapshots:
       aria-hidden: 1.2.6
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
-      react-remove-scroll: 2.7.1(@types/react@19.2.7)(react@19.2.0)
+      react-remove-scroll: 2.7.2(@types/react@19.2.7)(react@19.2.0)
     optionalDependencies:
       "@types/react": 19.2.7
       "@types/react-dom": 19.2.3(@types/react@19.2.7)
@@ -6594,7 +6618,7 @@ snapshots:
       aria-hidden: 1.2.6
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
-      react-remove-scroll: 2.7.1(@types/react@19.2.7)(react@19.2.0)
+      react-remove-scroll: 2.7.2(@types/react@19.2.7)(react@19.2.0)
     optionalDependencies:
       "@types/react": 19.2.7
       "@types/react-dom": 19.2.3(@types/react@19.2.7)
@@ -6657,7 +6681,7 @@ snapshots:
       aria-hidden: 1.2.6
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
-      react-remove-scroll: 2.7.1(@types/react@19.2.7)(react@19.2.0)
+      react-remove-scroll: 2.7.2(@types/react@19.2.7)(react@19.2.0)
     optionalDependencies:
       "@types/react": 19.2.7
       "@types/react-dom": 19.2.3(@types/react@19.2.7)
@@ -6804,7 +6828,7 @@ snapshots:
       aria-hidden: 1.2.6
       react: 19.2.0
       react-dom: 19.2.0(react@19.2.0)
-      react-remove-scroll: 2.7.1(@types/react@19.2.7)(react@19.2.0)
+      react-remove-scroll: 2.7.2(@types/react@19.2.7)(react@19.2.0)
     optionalDependencies:
       "@types/react": 19.2.7
       "@types/react-dom": 19.2.3(@types/react@19.2.7)
@@ -7337,7 +7361,7 @@ snapshots:
       "@tanstack/router-core": 1.139.10
       "@tanstack/router-utils": 1.139.0
       "@tanstack/virtual-file-routes": 1.139.0
-      prettier: 3.7.1
+      prettier: 3.7.2
       recast: 0.23.11
       source-map: 0.7.6
       tsx: 4.20.6
@@ -8147,11 +8171,12 @@ snapshots:
 
   gsap@3.13.0: {}
 
-  harden-react-markdown@1.1.5(react-markdown@10.1.0(@types/react@19.2.7)(react@19.2.0))(react@19.2.0):
+  harden-react-markdown@1.1.6(react-markdown@10.1.0(@types/react@19.2.7)(react@19.2.0))(react@19.2.0):
     dependencies:
       react: 19.2.0
       react-markdown: 10.1.0(@types/react@19.2.7)(react@19.2.0)
-      rehype-harden: 1.1.5
+      rehype-harden: 1.1.6
+      rehype-raw: 7.0.0
 
   has-flag@4.0.0: {}
 
@@ -8206,6 +8231,22 @@ snapshots:
     dependencies:
       "@types/hast": 3.0.4
 
+  hast-util-raw@9.1.0:
+    dependencies:
+      "@types/hast": 3.0.4
+      "@types/unist": 3.0.3
+      "@ungap/structured-clone": 1.3.0
+      hast-util-from-parse5: 8.0.3
+      hast-util-to-parse5: 8.0.0
+      html-void-elements: 3.0.0
+      mdast-util-to-hast: 13.2.1
+      parse5: 7.3.0
+      unist-util-position: 5.0.0
+      unist-util-visit: 5.0.0
+      vfile: 6.0.3
+      web-namespaces: 2.0.1
+      zwitch: 2.0.4
+
   hast-util-to-html@9.0.5:
     dependencies:
       "@types/hast": 3.0.4
@@ -8239,6 +8280,16 @@ snapshots:
       vfile-message: 4.0.3
     transitivePeerDependencies:
       - supports-color
+
+  hast-util-to-parse5@8.0.0:
+    dependencies:
+      "@types/hast": 3.0.4
+      comma-separated-tokens: 2.0.3
+      devlop: 1.1.0
+      property-information: 6.5.0
+      space-separated-tokens: 2.0.2
+      web-namespaces: 2.0.1
+      zwitch: 2.0.4
 
   hast-util-to-text@4.0.2:
     dependencies:
@@ -8951,7 +9002,7 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier@3.7.1: {}
+  prettier@3.7.2: {}
 
   prismjs@1.30.0: {}
 
@@ -8961,13 +9012,15 @@ snapshots:
       object-assign: 4.1.1
       react-is: 16.13.1
 
+  property-information@6.5.0: {}
+
   property-information@7.1.0: {}
 
   proxy-from-env@1.1.0: {}
 
   punycode@2.3.1: {}
 
-  react-day-picker@9.11.2(react@19.2.0):
+  react-day-picker@9.11.3(react@19.2.0):
     dependencies:
       "@date-fns/tz": 1.4.1
       date-fns: 4.1.0
@@ -8979,7 +9032,7 @@ snapshots:
       react: 19.2.0
       scheduler: 0.27.0
 
-  react-hook-form@7.66.1(react@19.2.0):
+  react-hook-form@7.67.0(react@19.2.0):
     dependencies:
       react: 19.2.0
 
@@ -9026,7 +9079,7 @@ snapshots:
     optionalDependencies:
       "@types/react": 19.2.7
 
-  react-remove-scroll@2.7.1(@types/react@19.2.7)(react@19.2.0):
+  react-remove-scroll@2.7.2(@types/react@19.2.7)(react@19.2.0):
     dependencies:
       react: 19.2.0
       react-remove-scroll-bar: 2.3.8(@types/react@19.2.7)(react@19.2.0)
@@ -9125,7 +9178,9 @@ snapshots:
     dependencies:
       regex-utilities: 2.3.0
 
-  rehype-harden@1.1.5: {}
+  rehype-harden@1.1.6:
+    dependencies:
+      unist-util-visit: 5.0.0
 
   rehype-katex@7.0.1:
     dependencies:
@@ -9135,6 +9190,12 @@ snapshots:
       hast-util-to-text: 4.0.2
       katex: 0.16.25
       unist-util-visit-parents: 6.0.2
+      vfile: 6.0.3
+
+  rehype-raw@7.0.0:
+    dependencies:
+      "@types/hast": 3.0.4
+      hast-util-raw: 9.1.0
       vfile: 6.0.3
 
   remark-gfm@4.0.1:

@@ -24,5 +24,8 @@ ignore = [
 [tool.ruff.lint.isort]
 known-first-party = ["server"]
 
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
 [tool.uv.workspace]
 members = ["server"]

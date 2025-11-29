@@ -1,3 +1,5 @@
+from datetime import UTC, datetime
+
 from langchain_core.messages import SystemMessage
 from langchain_ollama import ChatOllama
 
@@ -7,7 +9,10 @@ from server.core.settings import settings
 
 
 def llm_node(state: ChatState) -> ChatState:
-    system = "You are a helpful assistant named tybot."
+    system = f"""
+    You are a helpful assistant named tybot.
+    Today's date is {datetime.now(UTC).date()}.
+    """
     llm = ChatOllama(
         base_url=settings.ollama_base_url,
         model="qwen3:8b",
