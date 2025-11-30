@@ -20,7 +20,7 @@ type ChatState = {
   parameters: ChatParameters;
   input: string;
   running: boolean;
-  threadId: string;
+  threadId: string | undefined;
   messages: Message[];
   agent: HttpAgent | null;
 };
@@ -34,7 +34,7 @@ const store = new Store<ChatState>({
   },
   input: "",
   running: false,
-  threadId: crypto.randomUUID(),
+  threadId: undefined,
   messages: [],
   agent: null,
 });
@@ -55,7 +55,7 @@ type ChatSelectors = {
   useParameters: () => ChatParameters;
   useInput: () => string;
   useRunning: () => boolean;
-  useThreadId: () => string;
+  useThreadId: () => string | undefined;
   useMessages: () => Message[];
   useToolMessage: (id: string) => ToolMessage | undefined;
 };
@@ -91,7 +91,7 @@ const useChat = (): {
     actions.setChatState({
       input: "",
       running: false,
-      threadId: crypto.randomUUID(),
+      threadId: undefined,
       messages: [],
       agent: null,
     });
@@ -119,13 +119,7 @@ const useChat = (): {
       messages: [...store.state.messages, message],
       agent,
     }));
-    agent.runAgent(
-      {
-        runId: crypto.randomUUID(),
-        abortController: new AbortController(),
-      },
-      subscriber,
-    );
+    agent.runAgent({ abortController: new AbortController() }, subscriber);
   };
 
   actions.deleteMessage = (id: string) => {
@@ -151,13 +145,7 @@ const useChat = (): {
       debug: import.meta.env.DEV,
     });
     store.setState((prevState) => ({ ...prevState, agent }));
-    agent.runAgent(
-      {
-        runId: crypto.randomUUID(),
-        abortController: new AbortController(),
-      },
-      subscriber,
-    );
+    agent.runAgent({ abortController: new AbortController() }, subscriber);
   };
 
   actions.regenerateMessage = (id: string) => {
@@ -178,13 +166,7 @@ const useChat = (): {
       debug: import.meta.env.DEV,
     });
     store.setState((prevState) => ({ ...prevState, agent }));
-    agent.runAgent(
-      {
-        runId: crypto.randomUUID(),
-        abortController: new AbortController(),
-      },
-      subscriber,
-    );
+    agent.runAgent({ abortController: new AbortController() }, subscriber);
   };
 
   const selectors: ChatSelectors = {
@@ -210,7 +192,11 @@ const useChat = (): {
     onRunStartedEvent({ event }) {
       logger.info(event.type, event);
       toast.info(t("chat.run-started"));
-      actions.setChatState({ input: "", running: true });
+      actions.setChatState({
+        input: "",
+        running: true,
+        threadId: event.threadId,
+      });
     },
     onRunFinishedEvent({ event }) {
       logger.success(event.type, event);

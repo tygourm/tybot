@@ -1,3 +1,5 @@
+from alembic import command
+from alembic.config import Config
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import get_swagger_ui_html
@@ -6,6 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from uvicorn import run
 
 from server.core.lifespan import lifespan
+from server.core.logger import get_logger
 from server.core.settings import settings
 from server.infra.api.router import router as api
 
@@ -26,6 +29,7 @@ app.add_middleware(
 )
 app.include_router(api, prefix="/api", tags=["api"])
 app.mount("/static", StaticFiles(directory="static"), name="static")
+logger = get_logger(__name__)
 
 
 @app.get("/", include_in_schema=False)
@@ -45,6 +49,10 @@ async def docs() -> HTMLResponse:
 
 
 def main() -> None:
+    logger.info("Running migrations...")
+    command.upgrade(Config("alembic.ini"), "head")
+
+    logger.info("Starting server...")
     run(
         "server.main:app",
         host=settings.host,

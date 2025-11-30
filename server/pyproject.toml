@@ -8,10 +8,13 @@ version = "0.0.0"
 requires-python = ">=3.12"
 dependencies = [
     "ag-ui-langgraph",
+    "alembic",
     "fastapi[standard]",
     "langchain-ollama",
     "langchain-tavily",
+    "psycopg2-binary",
     "pydantic-settings",
+    "sqlmodel",
 ]
 
 [project.scripts]

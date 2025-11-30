@@ -22,6 +22,15 @@ class Settings(BaseSettings):
 
     tavily_api_key: str | None = None
     ollama_base_url: str = "http://localhost:11434"
+    postgres_host: str = "localhost"
+    postgres_port: int = 5432
+    postgres_name: str = "tybot"
+    postgres_user: str = "postgres"
+    postgres_pass: str = ""
+
+    @property
+    def database_url(self) -> str:
+        return f"postgresql://{self.postgres_user}:{self.postgres_pass}@{self.postgres_host}:{self.postgres_port}/{self.postgres_name}"
 
     model_config = SettingsConfigDict(env_file=".env")
 

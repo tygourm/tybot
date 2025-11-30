@@ -3,15 +3,13 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from server.core.logger import get_logger, init_logger
-from server.core.settings import settings
+from server.core.logger import get_logger
 
 logger = get_logger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
-    init_logger(settings)
-    logger.info("%s Server startup...", app.title)
+    logger.info("%s server startup...", app.title)
     yield
-    logger.info("%s Server shutdown...", app.title)
+    logger.info("%s server shutdown...", app.title)
