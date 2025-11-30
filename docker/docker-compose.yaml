@@ -13,12 +13,17 @@ services:
     environment:
       - HOST=0.0.0.0
       - OLLAMA_BASE_URL=http://ollama:11434
+      - POSTGRES_HOST=$POSTGRES_HOST
+      - POSTGRES_PORT=$POSTGRES_PORT
+      - POSTGRES_NAME=$POSTGRES_NAME
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASS=$POSTGRES_PASS
     env_file:
       - .env
 
   ollama:
     gpus: all
-    image: ollama/ollama:0.12.11
+    image: ollama/ollama:0.13.0
     ports:
       - 11434:11434
     environment:
@@ -26,3 +31,14 @@ services:
       - OLLAMA_MAX_LOADED_MODELS=1
     volumes:
       - ./ollama:/root/.ollama
+
+  postgres:
+    image: postgres:18
+    ports:
+      - $POSTGRES_PORT:5432
+    environment:
+      - POSTGRES_DB=$POSTGRES_NAME
+      - POSTGRES_USER=$POSTGRES_USER
+      - POSTGRES_PASSWORD=$POSTGRES_PASS
+    env_file:
+      - .env
