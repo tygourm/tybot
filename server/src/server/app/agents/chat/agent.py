@@ -1,6 +1,8 @@
+from uuid import UUID
+
 from ag_ui_langgraph import LangGraphAgent
 from langgraph.checkpoint.memory import InMemorySaver
-from langgraph.graph import StateGraph
+from langgraph.graph.state import CompiledStateGraph, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 
 from server.app.agents.chat.nodes import llm_node
@@ -8,7 +10,7 @@ from server.app.agents.chat.state import ChatState
 from server.app.agents.chat.tools import chat_toolkit
 
 
-def build_chat_graph() -> StateGraph:
+def build_chat_graph(*, debug: bool) -> CompiledStateGraph:
     graph = StateGraph(ChatState)  # ty: ignore[invalid-argument-type]
 
     graph.add_node("llm", llm_node)
@@ -18,9 +20,12 @@ def build_chat_graph() -> StateGraph:
     graph.add_edge("tools", "llm")
     graph.add_conditional_edges("llm", tools_condition)
 
-    return graph
+    return graph.compile(InMemorySaver(), debug=debug)
 
 
-def build_chat_agent(*, debug: bool) -> LangGraphAgent:
-    graph = build_chat_graph().compile(InMemorySaver(), debug=debug)
-    return LangGraphAgent(name="Chat", graph=graph)
+def build_chat_agent(run_id: str, *, debug: bool) -> LangGraphAgent:
+    return LangGraphAgent(
+        name="Chat",
+        config={"run_id": UUID(run_id)},
+        graph=build_chat_graph(debug=debug),
+    )

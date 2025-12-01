@@ -8,8 +8,8 @@ from server.core.logger import get_logger
 
 class RunAgent:
     def __init__(self, agent: LangGraphAgent) -> None:
-        self.agent = agent
         self.logger = get_logger(__name__)
+        self.agent = agent
 
     async def __call__(self, body: RunAgentInput) -> AsyncGenerator[str, None]:
         self.logger.info("Running agent with input %s", body)

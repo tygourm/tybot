@@ -7,8 +7,8 @@ ${imports if imports else ""}
 
 revision: str = ${repr(up_revision)}
 depends_on: str | Sequence[str] | None = ${repr(depends_on)}
-down_revision: str | Sequence[str] | None = ${repr(down_revision)}
 branch_labels: str | Sequence[str] | None = ${repr(branch_labels)}
+down_revision: str | Sequence[str] | None = ${repr(down_revision)}
 
 
 def upgrade() -> None:
