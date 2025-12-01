@@ -16,10 +16,10 @@ class ThreadsRepository:
         with Session(self.engine) as session:
             return session.exec(statement).first() is not None
 
-    def create(self, tread_id: str) -> ThreadEntity:
-        model = ThreadModel(id=UUID(tread_id))
+    def create(self, thread_id: str) -> ThreadEntity:
+        model = ThreadModel(id=UUID(thread_id), runs=[])
         with Session(self.engine) as session:
             session.add(model)
             session.commit()
             session.refresh(model)
-        return model.to_entity()
+            return model.to_entity()
