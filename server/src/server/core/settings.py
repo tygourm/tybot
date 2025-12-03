@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     postgres_port: int = 5432
     postgres_name: str = "tybot"
     postgres_user: str = "postgres"
-    postgres_pass: str = ""
+    postgres_pass: str | None = None
 
     @property
     def database_url(self) -> str:
