@@ -15,7 +15,10 @@ class CreateRun:
 
     def __call__(self, thread_id: str, run_id: str) -> None:
         if not self.threads_repository.exists(thread_id):
-            self.logger.info("Thread %s does not exist", thread_id)
+            self.logger.warning("Thread %s does not exist", thread_id)
+            return
+        if self.runs_repository.exists(run_id):
+            self.logger.warning("Run %s already exists", run_id)
             return
         self.logger.info("Creating run %s", run_id)
         self.runs_repository.create(run_id, thread_id)

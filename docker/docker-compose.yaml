@@ -20,10 +20,13 @@ services:
       - POSTGRES_PASS=$POSTGRES_PASS
     env_file:
       - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   ollama:
     gpus: all
-    image: ollama/ollama:0.13.0
+    image: ollama/ollama:0.13.1
     ports:
       - 11434:11434
     environment:
@@ -42,3 +45,7 @@ services:
       - POSTGRES_PASSWORD=$POSTGRES_PASS
     env_file:
       - .env
+    healthcheck:
+      test: pg_isready -U $POSTGRES_USER -d $POSTGRES_NAME
+      interval: 3s
+      timeout: 10s

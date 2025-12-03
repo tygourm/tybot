@@ -10,7 +10,7 @@ dependencies = [
     "ag-ui-langgraph",
     "alembic",
     "fastapi[standard]",
-    "langchain-ollama",
+    "langchain[ollama,openai]",
     "langchain-tavily",
     "psycopg2-binary",
     "pydantic-settings",

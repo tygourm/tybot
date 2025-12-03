@@ -1,5 +1,3 @@
-from uuid import UUID
-
 from ag_ui_langgraph import LangGraphAgent
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph.state import CompiledStateGraph, StateGraph
@@ -23,9 +21,9 @@ def build_chat_graph(*, debug: bool) -> CompiledStateGraph:
     return graph.compile(InMemorySaver(), debug=debug)
 
 
-def build_chat_agent(run_id: str, *, debug: bool) -> LangGraphAgent:
+def build_chat_agent(thread_id: str, *, debug: bool) -> LangGraphAgent:
     return LangGraphAgent(
         name="Chat",
-        config={"run_id": UUID(run_id)},
         graph=build_chat_graph(debug=debug),
+        config={"configurable": {"thread_id": thread_id}},
     )

@@ -23,3 +23,15 @@ class ThreadsRepository:
             session.commit()
             session.refresh(model)
             return model.to_entity()
+
+    def read(self, thread_id: str) -> ThreadEntity | None:
+        statement = select(ThreadModel).where(ThreadModel.id == UUID(thread_id))
+        with Session(self.engine) as session:
+            model = session.exec(statement).first()
+            return model.to_entity() if model else None
+
+    def read_all(self) -> list[ThreadEntity]:
+        statement = select(ThreadModel)
+        with Session(self.engine) as session:
+            models = session.exec(statement).all()
+            return [model.to_entity() for model in models]

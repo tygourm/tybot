@@ -9,7 +9,7 @@ class CreateThread:
 
     def __call__(self, thread_id: str) -> None:
         if self.threads_repository.exists(thread_id):
-            self.logger.info("Thread %s already exists", thread_id)
+            self.logger.warning("Thread %s already exists", thread_id)
             return
         self.logger.info("Creating thread %s", thread_id)
         self.threads_repository.create(thread_id)
