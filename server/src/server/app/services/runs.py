@@ -1,9 +1,10 @@
+from server.core.entities import RunEntity
 from server.core.logger import get_logger
 from server.infra.db.repositories.runs import RunsRepository
 from server.infra.db.repositories.threads import ThreadsRepository
 
 
-class CreateRun:
+class RunsService:
     def __init__(
         self,
         runs_repository: RunsRepository,
@@ -13,12 +14,20 @@ class CreateRun:
         self.runs_repository = runs_repository
         self.threads_repository = threads_repository
 
-    def __call__(self, thread_id: str, run_id: str) -> None:
-        if not self.threads_repository.exists(thread_id):
+    def create(self, thread_id: str, run_id: str) -> None:
+        if not self.threads_repository.read(thread_id):
             self.logger.warning("Thread %s does not exist", thread_id)
             return
-        if self.runs_repository.exists(run_id):
+        if self.runs_repository.read(run_id):
             self.logger.warning("Run %s already exists", run_id)
             return
         self.logger.info("Creating run %s", run_id)
         self.runs_repository.create(run_id, thread_id)
+
+    def read(self, run_id: str) -> RunEntity | None:
+        self.logger.info("Reading run %s", run_id)
+        return self.runs_repository.read(run_id)
+
+    def read_all(self, thread_id: str) -> list[RunEntity]:
+        self.logger.info("Reading runs for thread %s", thread_id)
+        return self.runs_repository.read_all(thread_id)

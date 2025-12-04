@@ -8,11 +8,11 @@ router = APIRouter()
 
 @router.get("/")
 def get_threads() -> list[str]:
-    read_threads = injector.read_threads()
-    return [thread.id for thread in read_threads()]
+    threads_service = injector.threads_service()
+    return [thread.id for thread in threads_service.read_all()]
 
 
 @router.get("/{thread_id}")
 def get_thread(thread_id: str) -> ThreadEntity | None:
-    read_thread = injector.read_thread()
-    return read_thread(thread_id)
+    threads_service = injector.threads_service()
+    return threads_service.read(thread_id)

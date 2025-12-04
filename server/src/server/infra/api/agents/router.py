@@ -12,15 +12,15 @@ router = APIRouter()
 
 @router.post("/run")
 def run_agent(body: RunAgentInput) -> StreamingResponse:
-    run_agent = injector.run_chat_agent(body.thread_id)
-    create_thread = injector.create_thread()
-    create_run = injector.create_run()
+    agents_service = injector.agents_service(body.thread_id)
+    threads_service = injector.threads_service()
+    runs_service = injector.runs_service()
     encoder = EventEncoder()
 
     async def event_stream() -> AsyncGenerator[str, None]:
-        async for event in run_agent(body):
+        async for event in agents_service.run(body):
             yield encoder.encode(event)  # ty: ignore[invalid-argument-type]
 
-    create_thread(body.thread_id)
-    create_run(body.thread_id, body.run_id)
+    threads_service.create(body.thread_id)
+    runs_service.create(body.thread_id, body.run_id)
     return StreamingResponse(event_stream(), media_type=encoder.get_content_type())
