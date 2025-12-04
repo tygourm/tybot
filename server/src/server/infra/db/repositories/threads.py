@@ -11,11 +11,6 @@ class ThreadsRepository:
     def __init__(self, engine: Engine) -> None:
         self.engine = engine
 
-    def exists(self, thread_id: str) -> bool:
-        statement = select(ThreadModel).where(ThreadModel.id == UUID(thread_id))
-        with Session(self.engine) as session:
-            return session.exec(statement).first() is not None
-
     def create(self, thread_id: str) -> ThreadEntity:
         model = ThreadModel(id=UUID(thread_id), runs=[])
         with Session(self.engine) as session:

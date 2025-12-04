@@ -11,11 +11,6 @@ class RunsRepository:
     def __init__(self, engine: Engine) -> None:
         self.engine = engine
 
-    def exists(self, run_id: str) -> bool:
-        statement = select(RunModel).where(RunModel.id == UUID(run_id))
-        with Session(self.engine) as session:
-            return session.exec(statement).first() is not None
-
     def create(self, run_id: str, tread_id: str) -> RunEntity:
         model = RunModel(id=UUID(run_id), thread_id=UUID(tread_id))
         with Session(self.engine) as session:
