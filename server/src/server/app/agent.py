@@ -1,5 +1,12 @@
+from datetime import UTC, datetime
+
+from ag_ui_langgraph import LangGraphAgent
+from langchain.agents import create_agent
+from langchain.agents.middleware import SummarizationMiddleware, ToolRetryMiddleware
 from langchain.tools import tool
+from langchain_core.language_models import BaseChatModel
 from langchain_tavily import TavilyCrawl, TavilyExtract, TavilySearch
+from langgraph.checkpoint.memory import InMemorySaver
 
 from server.core.settings import settings
 
@@ -36,32 +43,21 @@ def sub(a: float, b: float) -> float:
     return a - b
 
 
-@tool(parse_docstring=True)
-def mul(a: float, b: float) -> float:
-    """Multiply two numbers.
-
-    Args:
-        a (float): The first number.
-        b (float): The second number.
-
-    Returns:
-        float: The product of the two numbers.
+def build_agent(
+    model: BaseChatModel,
+    *,
+    debug: bool,
+) -> LangGraphAgent:
+    system_prompt = f"""
+    You are a helpful assistant named tybot.
+    Today's date is {datetime.now(UTC).date()}.
     """
-    return a * b
-
-
-@tool(parse_docstring=True)
-def div(a: float, b: float) -> float:
-    """Divide two numbers.
-
-    Args:
-        a (float): The first number.
-        b (float): The second number.
-
-    Returns:
-        float: The quotient of the two numbers.
-    """
-    return a / b
-
-
-chat_toolkit = [crawl, search, extract, add, sub, mul, div]
+    graph = create_agent(
+        model,
+        [add, sub, crawl, search, extract],
+        system_prompt=system_prompt,
+        middleware=[ToolRetryMiddleware(), SummarizationMiddleware(model)],
+        checkpointer=InMemorySaver(),
+        debug=debug,
+    )
+    return LangGraphAgent(name="Agent", graph=graph)

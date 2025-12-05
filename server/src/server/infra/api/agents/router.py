@@ -12,8 +12,8 @@ router = APIRouter()
 
 @router.post("/run")
 def run_agent(body: RunAgentInput) -> StreamingResponse:
-    agents_service = injector.agents_service(body.thread_id)
     threads_service = injector.threads_service()
+    agents_service = injector.agents_service()
     runs_service = injector.runs_service()
     encoder = EventEncoder()
 

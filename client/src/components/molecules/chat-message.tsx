@@ -30,6 +30,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useChat } from "@/hooks/use-chat";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
+import { getUserMessageContent } from "@/lib/utils";
 
 const useFeedback = () => {
   const [feedback, setFeedback] = useState<boolean | null>(null);
@@ -58,7 +59,7 @@ function ChatMessage({ message }: { message: TMessage }) {
 
 function UserMessage({ message }: { message: TUserMessage }) {
   const { t } = useTranslation();
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState(getUserMessageContent(message));
   const [editing, setEditing] = useState(false);
   const [copy, isCopied] = useCopyToClipboard();
   const { chatActions, chatSelectors } = useChat();
@@ -78,8 +79,8 @@ function UserMessage({ message }: { message: TUserMessage }) {
             <Button
               variant={"outline"}
               onClick={() => {
-                setContent("");
                 setEditing(false);
+                setContent(getUserMessageContent(message));
               }}
             >
               {t("chat-message.cancel")}
@@ -87,9 +88,8 @@ function UserMessage({ message }: { message: TUserMessage }) {
             <Button
               disabled={running || content.trim() === ""}
               onClick={() => {
-                chatActions.updateMessage(message.id, content);
-                setContent("");
                 setEditing(false);
+                chatActions.updateMessage(message.id, content);
               }}
             >
               {t("chat-message.confirm")}
@@ -116,9 +116,7 @@ function UserMessage({ message }: { message: TUserMessage }) {
         </Action>
         <Action
           tooltip={t("chat-message.copy")}
-          onClick={() =>
-            copy(typeof message.content === "string" ? message.content : "")
-          }
+          onClick={() => copy(getUserMessageContent(message))}
         >
           {isCopied ? <Check /> : <Copy />}
         </Action>
@@ -164,9 +162,7 @@ function AssistantMessage({ message }: { message: TAssistantMessage }) {
         </Action>
         <Action
           tooltip={t("chat-message.copy")}
-          onClick={() =>
-            copy(typeof message.content === "string" ? message.content : "")
-          }
+          onClick={() => message.content && copy(message.content)}
         >
           {isCopied ? <Check /> : <Copy />}
         </Action>
