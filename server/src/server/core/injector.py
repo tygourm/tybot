@@ -1,12 +1,13 @@
 from sqlmodel import create_engine
 
-from server.app.agents.chat.agent import build_chat_agent
+from server.app.agent import build_agent
 from server.app.services.agents import AgentsService
 from server.app.services.runs import RunsService
 from server.app.services.threads import ThreadsService
 from server.core.settings import settings
 from server.infra.db.repositories.runs import RunsRepository
 from server.infra.db.repositories.threads import ThreadsRepository
+from server.infra.llm.client import create_client
 
 
 class Injector:
@@ -21,8 +22,9 @@ class Injector:
     def runs_service(self) -> RunsService:
         return RunsService(self.runs_repository, self.threads_repository)
 
-    def agents_service(self, thread_id: str) -> AgentsService:
-        return AgentsService(build_chat_agent(thread_id, debug=settings.dev))
+    def agents_service(self) -> AgentsService:
+        model = create_client()
+        return AgentsService(build_agent(model, debug=settings.dev))
 
 
 injector = Injector()

@@ -25,4 +25,18 @@ CREATE TABLE runs (
 
 UPDATE alembic_version SET version_num='0002' WHERE alembic_version.version_num = '0001';
 
+-- Running upgrade 0002 -> 0003
+
+CREATE TABLE messages (
+    id UUID NOT NULL, 
+    run_id UUID NOT NULL, 
+    role VARCHAR NOT NULL, 
+    data JSONB, 
+    meta JSONB, 
+    PRIMARY KEY (id), 
+    FOREIGN KEY(run_id) REFERENCES runs (id) ON DELETE CASCADE
+);
+
+UPDATE alembic_version SET version_num='0003' WHERE alembic_version.version_num = '0002';
+
 COMMIT;
