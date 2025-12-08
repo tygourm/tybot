@@ -1,7 +1,7 @@
 ### Base stage ###
 FROM node:22-bookworm-slim AS base
 RUN corepack enable && \
-    corepack prepare pnpm@10.24.0
+    corepack prepare pnpm@10.25.0
 WORKDIR /app
 
 
