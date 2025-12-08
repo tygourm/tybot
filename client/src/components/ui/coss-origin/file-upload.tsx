@@ -14,7 +14,8 @@ import {
 import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
-import { formatBytes, useFileUpload } from "@/hooks/use-file-upload";
+import { useFileUpload } from "@/hooks/use-file-upload";
+import { formatBytes } from "@/lib/utils";
 
 const getFileIcon = (file: { file: File | { type: string; name: string } }) => {
   const fileName = file.file instanceof File ? file.file.name : file.file.name;
