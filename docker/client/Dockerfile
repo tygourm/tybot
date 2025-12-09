@@ -1,5 +1,5 @@
 ### Base stage ###
-FROM node:22-bookworm-slim AS base
+FROM node:24.11-alpine AS base
 RUN corepack enable && \
     corepack prepare pnpm@10.25.0
 WORKDIR /app

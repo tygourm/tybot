@@ -1,6 +1,6 @@
 ARG USER=server
 ARG GROUP=server
-ARG PYTHON=python:3.12-slim-bookworm
+ARG PYTHON=python:3.12-alpine
 
 
 ### Base stage ###
@@ -31,8 +31,8 @@ RUN uv build --wheel -o /wheels
 FROM $PYTHON
 ARG USER
 ARG GROUP
-RUN groupadd $GROUP && \
-    useradd -m -g $GROUP -u 1000 $USER
+RUN addgroup $GROUP && \
+    adduser -D -G $GROUP -u 1000 $USER
 WORKDIR /home/$USER/app
 
 COPY --from=installer /wheels /wheels
