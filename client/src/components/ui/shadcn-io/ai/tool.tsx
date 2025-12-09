@@ -47,12 +47,15 @@ const getStatusBadge = (
   const icons = {
     "input-streaming": <CircleIcon className="size-4" />,
     "input-available": <ClockIcon className="size-4 animate-pulse" />,
-    "output-available": <CheckCircleIcon className="size-4 text-green-600" />,
-    "output-error": <XCircleIcon className="size-4 text-red-600" />,
+    // "output-available": <CheckCircleIcon className="size-4 text-green-600" />,
+    "output-available": <CheckCircleIcon className="size-4" />,
+    // "output-error": <XCircleIcon className="size-4 text-red-600" />,
+    "output-error": <XCircleIcon className="size-4" />,
   } as const;
 
   return (
-    <Badge className="rounded-full text-xs" variant="secondary">
+    // <Badge className="rounded-full text-xs" variant="outline">
+    <Badge className="border-none text-sm" variant="outline">
       {icons[status]}
       {labels[status]}
     </Badge>
@@ -122,7 +125,8 @@ export const ToolInput = ({ className, input, ...props }: ToolInputProps) => {
         <CodeBlock
           code={JSON.stringify(input, null, 2)}
           language="json"
-          className="border-none bg-secondary"
+          // className="border-none bg-secondary"
+          className="border"
         >
           <CodeBlockCopyButton />
         </CodeBlock>
@@ -161,7 +165,7 @@ export const ToolOutput = ({
           errorText
             ? "bg-destructive/10 text-destructive"
             : // : "bg-muted/50 text-foreground",
-              "bg-secondary text-foreground",
+              "border",
         )}
       >
         {errorText && <div>{errorText}</div>}
