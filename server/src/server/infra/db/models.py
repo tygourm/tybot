@@ -3,7 +3,7 @@ from uuid import UUID, uuid4
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Column, Field, Relationship, SQLModel
 
-from server.core.entities import RunEntity, ThreadEntity
+from server.core.entities import Run, Thread
 
 
 class Model(SQLModel):
@@ -14,8 +14,8 @@ class ThreadModel(Model, table=True):
     __tablename__ = "threads"
     runs: list["RunModel"] = Relationship(back_populates="thread", cascade_delete=True)
 
-    def to_entity(self) -> ThreadEntity:
-        return ThreadEntity(id=str(self.id), runs=[str(run.id) for run in self.runs])
+    def to_entity(self) -> Thread:
+        return Thread(id=str(self.id), runs=[str(run.id) for run in self.runs])
 
 
 class RunModel(Model, table=True):
@@ -25,8 +25,8 @@ class RunModel(Model, table=True):
     thread: ThreadModel = Relationship(back_populates="runs")
     messages: list["MessageModel"] = Relationship(back_populates="run")
 
-    def to_entity(self) -> RunEntity:
-        return RunEntity(id=str(self.id))
+    def to_entity(self) -> Run:
+        return Run(id=str(self.id))
 
 
 class MessageModel(Model, table=True):

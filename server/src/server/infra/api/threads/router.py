@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from server.core.entities import ThreadEntity
+from server.core.entities import Thread
 from server.core.injector import injector
 
 router = APIRouter()
@@ -13,6 +13,6 @@ def get_threads() -> list[str]:
 
 
 @router.get("/{thread_id}")
-def get_thread(thread_id: str) -> ThreadEntity | None:
+def get_thread(thread_id: str) -> Thread | None:
     threads_service = injector.threads_service()
     return threads_service.read(thread_id)

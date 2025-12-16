@@ -2,11 +2,11 @@ from dataclasses import dataclass
 
 
 @dataclass
-class ThreadEntity:
+class Thread:
     id: str
     runs: list[str]
 
 
 @dataclass
-class RunEntity:
+class Run:
     id: str

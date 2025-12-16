@@ -1,4 +1,4 @@
-from server.core.entities import ThreadEntity
+from server.core.entities import Thread
 from server.core.logger import get_logger
 from server.infra.db.repositories.threads import ThreadsRepository
 
@@ -15,10 +15,10 @@ class ThreadsService:
         self.logger.info("Creating thread %s", thread_id)
         self.threads_repository.create(thread_id)
 
-    def read(self, thread_id: str) -> ThreadEntity | None:
+    def read(self, thread_id: str) -> Thread | None:
         self.logger.info("Reading thread %s", thread_id)
         return self.threads_repository.read(thread_id)
 
-    def read_all(self) -> list[ThreadEntity]:
+    def read_all(self) -> list[Thread]:
         self.logger.info("Reading threads")
         return self.threads_repository.read_all()
