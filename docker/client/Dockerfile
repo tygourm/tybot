@@ -1,7 +1,7 @@
 ### Base stage ###
 FROM node:24.11-alpine AS base
 RUN corepack enable && \
-    corepack prepare pnpm@10.25.0
+    corepack prepare pnpm@10.26.0
 WORKDIR /app
 
 

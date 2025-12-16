@@ -14,10 +14,21 @@ const ChatParametersSchema = z.object({
   frequencyPenalty: z.number().min(-2).max(2),
 });
 
+const ChatAttachementSchema = z.object({
+  id: z.uuid(),
+  name: z.string(),
+  size: z.number(),
+  type: z.string(),
+  path: z.url().optional(),
+  data: z.instanceof(File).optional(),
+});
+
 type ChatParameters = z.infer<typeof ChatParametersSchema>;
+type ChatAttachement = z.infer<typeof ChatAttachementSchema>;
 
 type ChatState = {
   parameters: ChatParameters;
+  attachments: ChatAttachement[];
   input: string;
   running: boolean;
   threadId: string | undefined;
@@ -32,6 +43,7 @@ const store = new Store<ChatState>({
     presencePenalty: 0,
     frequencyPenalty: 0,
   },
+  attachments: [],
   input: "",
   running: false,
   threadId: undefined,
@@ -41,6 +53,9 @@ const store = new Store<ChatState>({
 
 type ChatActions = {
   setChatState: (state: Partial<ChatState>) => void;
+  addAttachment: (attachment: ChatAttachement) => void;
+  removeAttachment: (id: string) => void;
+  clearAttachments: () => void;
   addMessage: (message: Message) => void;
   addChunk: (id: string, delta: string) => void;
   newChat: () => void;
@@ -53,6 +68,7 @@ type ChatActions = {
 
 type ChatSelectors = {
   useParameters: () => ChatParameters;
+  useAttachments: () => ChatAttachement[];
   useInput: () => string;
   useRunning: () => boolean;
   useThreadId: () => string | undefined;
@@ -69,6 +85,23 @@ const useChat = (): {
 
   actions.setChatState = (state: Partial<ChatState>) =>
     store.setState((prevState) => ({ ...prevState, ...state }));
+
+  actions.addAttachment = (attachment: ChatAttachement) =>
+    store.setState((prevState) => ({
+      ...prevState,
+      attachments: [
+        ...prevState.attachments,
+        ChatAttachementSchema.parse(attachment),
+      ],
+    }));
+
+  actions.removeAttachment = (id: string) =>
+    store.setState((prevState) => ({
+      ...prevState,
+      attachments: prevState.attachments.filter((a) => a.id !== id),
+    }));
+
+  actions.clearAttachments = () => actions.setChatState({ attachments: [] });
 
   actions.addMessage = (message: Message) =>
     store.setState((prevState) => ({
@@ -171,15 +204,11 @@ const useChat = (): {
 
   const selectors: ChatSelectors = {
     useParameters: () => useStore(store, (state) => state.parameters),
-
+    useAttachments: () => useStore(store, (state) => state.attachments),
     useInput: () => useStore(store, (state) => state.input),
-
     useRunning: () => useStore(store, (state) => state.running),
-
     useThreadId: () => useStore(store, (state) => state.threadId),
-
     useMessages: () => useStore(store, (state) => state.messages),
-
     useToolMessage: (id) =>
       useStore(store, (state) =>
         state.messages

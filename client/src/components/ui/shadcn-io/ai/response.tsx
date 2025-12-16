@@ -13,6 +13,7 @@ import {
   CodeBlock,
   CodeBlockCopyButton,
 } from "@/components/ui/shadcn-io/ai/code-block";
+import { logger } from "@/lib/logs";
 import { cn } from "@/lib/utils";
 
 /**
@@ -365,8 +366,8 @@ const components: Options["components"] = {
         language={language}
       >
         <CodeBlockCopyButton
-          onCopy={() => console.log("Copied code to clipboard")}
-          onError={() => console.error("Failed to copy code to clipboard")}
+          onCopy={() => logger.info("Copied code to clipboard")}
+          onError={() => logger.error("Failed to copy code to clipboard")}
         />
       </CodeBlock>
     );

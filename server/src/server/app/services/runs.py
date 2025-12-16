@@ -1,4 +1,4 @@
-from server.core.entities import RunEntity
+from server.core.entities import Run
 from server.core.logger import get_logger
 from server.infra.db.repositories.runs import RunsRepository
 from server.infra.db.repositories.threads import ThreadsRepository
@@ -24,10 +24,10 @@ class RunsService:
         self.logger.info("Creating run %s", run_id)
         self.runs_repository.create(run_id, thread_id)
 
-    def read(self, run_id: str) -> RunEntity | None:
+    def read(self, run_id: str) -> Run | None:
         self.logger.info("Reading run %s", run_id)
         return self.runs_repository.read(run_id)
 
-    def read_all(self, thread_id: str) -> list[RunEntity]:
+    def read_all(self, thread_id: str) -> list[Run]:
         self.logger.info("Reading runs for thread %s", thread_id)
         return self.runs_repository.read_all(thread_id)
