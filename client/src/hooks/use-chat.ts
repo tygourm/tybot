@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { logger } from "@/lib/logs";
+import { fileToBase64 } from "@/lib/utils";
 
 const ChatParametersSchema = z.object({
   temperature: z.number().min(0).max(2),
@@ -14,21 +15,11 @@ const ChatParametersSchema = z.object({
   frequencyPenalty: z.number().min(-2).max(2),
 });
 
-const ChatAttachementSchema = z.object({
-  id: z.uuid(),
-  name: z.string(),
-  size: z.number(),
-  type: z.string(),
-  path: z.url().optional(),
-  data: z.instanceof(File).optional(),
-});
-
 type ChatParameters = z.infer<typeof ChatParametersSchema>;
-type ChatAttachement = z.infer<typeof ChatAttachementSchema>;
 
 type ChatState = {
   parameters: ChatParameters;
-  attachments: ChatAttachement[];
+  attachments: File[];
   input: string;
   running: boolean;
   threadId: string | undefined;
@@ -53,14 +44,12 @@ const store = new Store<ChatState>({
 
 type ChatActions = {
   setChatState: (state: Partial<ChatState>) => void;
-  addAttachment: (attachment: ChatAttachement) => void;
-  removeAttachment: (id: string) => void;
-  clearAttachments: () => void;
+  setAttachments: (attachments: File[]) => void;
   addMessage: (message: Message) => void;
   addChunk: (id: string, delta: string) => void;
   newChat: () => void;
   abortRun: () => void;
-  runAgent: () => void;
+  runAgent: () => Promise<void>;
   deleteMessage: (id: string) => void;
   updateMessage: (id: string, content: string) => void;
   regenerateMessage: (id: string) => void;
@@ -68,7 +57,7 @@ type ChatActions = {
 
 type ChatSelectors = {
   useParameters: () => ChatParameters;
-  useAttachments: () => ChatAttachement[];
+  useAttachments: () => File[];
   useInput: () => string;
   useRunning: () => boolean;
   useThreadId: () => string | undefined;
@@ -86,22 +75,8 @@ const useChat = (): {
   actions.setChatState = (state: Partial<ChatState>) =>
     store.setState((prevState) => ({ ...prevState, ...state }));
 
-  actions.addAttachment = (attachment: ChatAttachement) =>
-    store.setState((prevState) => ({
-      ...prevState,
-      attachments: [
-        ...prevState.attachments,
-        ChatAttachementSchema.parse(attachment),
-      ],
-    }));
-
-  actions.removeAttachment = (id: string) =>
-    store.setState((prevState) => ({
-      ...prevState,
-      attachments: prevState.attachments.filter((a) => a.id !== id),
-    }));
-
-  actions.clearAttachments = () => actions.setChatState({ attachments: [] });
+  actions.setAttachments = (attachments: File[]) =>
+    actions.setChatState({ attachments });
 
   actions.addMessage = (message: Message) =>
     store.setState((prevState) => ({
@@ -135,11 +110,25 @@ const useChat = (): {
     actions.setChatState({ running: false, agent: null });
   };
 
-  actions.runAgent = () => {
+  actions.runAgent = async () => {
+    const content =
+      store.state.attachments.length > 0
+        ? [
+            { type: "text" as const, text: store.state.input },
+            ...(await Promise.all(
+              store.state.attachments.map(async (a) => ({
+                filename: a.name,
+                mimeType: a.type,
+                type: "binary" as const,
+                data: await fileToBase64(a),
+              })),
+            )),
+          ]
+        : store.state.input;
     const message: UserMessage = {
-      content: store.state.input,
       id: crypto.randomUUID(),
       role: "user",
+      content,
     };
     const agent = new HttpAgent({
       url: `${import.meta.env.SERVER_URL}/api/agents/run`,

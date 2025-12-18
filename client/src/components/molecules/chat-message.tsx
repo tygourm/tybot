@@ -65,8 +65,6 @@ function UserMessage({ message }: { message: TUserMessage }) {
   const { chatActions, chatSelectors } = useChat();
   const running = chatSelectors.useRunning();
 
-  if (typeof message.content !== "string") return null;
-
   return (
     <Message className="flex-col p-0" from="user">
       {editing ? (
@@ -97,7 +95,13 @@ function UserMessage({ message }: { message: TUserMessage }) {
           </div>
         </div>
       ) : (
-        <MessageContent className="">{message.content}</MessageContent>
+        <MessageContent className="">
+          {typeof message.content === "string"
+            ? message.content
+            : message.content[0].type === "text"
+              ? message.content[0].text
+              : ""}
+        </MessageContent>
       )}
       <Actions>
         <Action

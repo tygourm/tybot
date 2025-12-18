@@ -14,6 +14,7 @@ import {
 import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
+import { useChat } from "@/hooks/use-chat";
 import { useFileUpload } from "@/hooks/use-file-upload";
 import { formatBytes } from "@/lib/utils";
 
@@ -54,6 +55,7 @@ const getFileIcon = (file: { file: File | { type: string; name: string } }) => {
 
 function FileUpload() {
   const { t } = useTranslation();
+  const { chatActions } = useChat();
 
   const maxFiles = 10;
   const maxSize = 10 * 1024 * 1024;
@@ -70,7 +72,17 @@ function FileUpload() {
       clearFiles,
       getInputProps,
     },
-  ] = useFileUpload({ multiple: true, maxFiles, maxSize });
+  ] = useFileUpload({
+    maxSize,
+    maxFiles,
+    multiple: true,
+    accept: "image/*",
+    onFilesChange(files) {
+      chatActions.setAttachments(
+        files.filter((f) => f.file instanceof File).map((f) => f.file as File),
+      );
+    },
+  });
 
   return (
     <div className="flex flex-col gap-2">
