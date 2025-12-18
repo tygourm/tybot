@@ -5,14 +5,12 @@ from langchain.agents import create_agent
 from langchain.agents.middleware import SummarizationMiddleware, ToolRetryMiddleware
 from langchain.tools import tool
 from langchain_core.language_models import BaseChatModel
-from langchain_tavily import TavilyCrawl, TavilyExtract, TavilySearch
+from langchain_tavily import TavilySearch
 from langgraph.checkpoint.memory import InMemorySaver
 
 from server.core.settings import settings
 
-crawl = TavilyCrawl(tavily_api_key=settings.tavily_api_key)
 search = TavilySearch(tavily_api_key=settings.tavily_api_key)
-extract = TavilyExtract(tavily_api_key=settings.tavily_api_key)
 
 
 @tool(parse_docstring=True)
@@ -54,7 +52,7 @@ def build_agent(
     """
     graph = create_agent(
         model,
-        [add, sub, crawl, search, extract],
+        [add, sub, search],
         system_prompt=system_prompt,
         middleware=[ToolRetryMiddleware(), SummarizationMiddleware(model)],
         checkpointer=InMemorySaver(),

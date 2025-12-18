@@ -5,10 +5,12 @@ import {
   type DragEvent,
   type InputHTMLAttributes,
   useCallback,
+  useEffect,
   useRef,
   useState,
 } from "react";
 
+import { useChat } from "@/hooks/use-chat";
 import { formatBytes } from "@/lib/utils";
 
 export type FileMetadata = {
@@ -30,7 +32,6 @@ export type FileUploadOptions = {
   maxSize?: number; // in bytes
   accept?: string;
   multiple?: boolean; // Defaults to false
-  initialFiles?: FileMetadata[];
   onFilesChange?: (files: FileWithPreview[]) => void; // Callback when files change
   onFilesAdded?: (addedFiles: FileWithPreview[]) => void; // Callback when new files are added
 };
@@ -64,38 +65,41 @@ export type FileUploadActions = {
 export const useFileUpload = (
   options: FileUploadOptions = {},
 ): [FileUploadState, FileUploadActions] => {
+  const { chatSelectors } = useChat();
+  const attachments = chatSelectors.useAttachments();
+
   const {
     maxFiles = Infinity,
     maxSize = Infinity,
     accept = "*",
     multiple = false,
-    initialFiles = [],
     onFilesChange,
     onFilesAdded,
   } = options;
 
   const [state, setState] = useState<FileUploadState>({
-    files: initialFiles.map((file) => ({
-      file,
-      id: file.id,
-      preview: file.url,
-    })),
+    files: [],
     isDragging: false,
     errors: [],
   });
+
+  useEffect(() => {
+    setState((prev) => ({
+      ...prev,
+      files: attachments.map((a) => ({
+        file: a,
+        id: crypto.randomUUID(),
+        preview: URL.createObjectURL(a),
+      })),
+    }));
+  }, [attachments]);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
   const validateFile = useCallback(
     (file: File | FileMetadata): string | null => {
-      if (file instanceof File) {
-        if (file.size > maxSize) {
-          return `File "${file.name}" exceeds the maximum size of ${formatBytes(maxSize)}.`;
-        }
-      } else {
-        if (file.size > maxSize) {
-          return `File "${file.name}" exceeds the maximum size of ${formatBytes(maxSize)}.`;
-        }
+      if (file.size > maxSize) {
+        return `File "${file.name}" exceeds the maximum size of ${formatBytes(maxSize)}.`;
       }
 
       if (accept !== "*") {
@@ -134,39 +138,19 @@ export const useFileUpload = (
     [],
   );
 
-  const generateUniqueId = useCallback((file: File | FileMetadata): string => {
-    if (file instanceof File) {
-      return `${file.name}-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-    }
-    return file.id;
-  }, []);
-
   const clearFiles = useCallback(() => {
     setState((prev) => {
-      // Clean up object URLs
       prev.files.forEach((file) => {
         if (
           file.preview &&
           file.file instanceof File &&
           file.file.type.startsWith("image/")
-        ) {
+        )
           URL.revokeObjectURL(file.preview);
-        }
       });
-
-      if (inputRef.current) {
-        inputRef.current.value = "";
-      }
-
-      const newState = {
-        ...prev,
-        files: [],
-        errors: [],
-      };
-
-      onFilesChange?.(newState.files);
-      return newState;
+      return { ...prev, files: [], errors: [] };
     });
+    onFilesChange?.([]);
   }, [onFilesChange]);
 
   const addFiles = useCallback(
@@ -228,7 +212,7 @@ export const useFileUpload = (
         } else {
           validFiles.push({
             file,
-            id: generateUniqueId(file),
+            id: crypto.randomUUID(),
             preview: createPreview(file),
           });
         }
@@ -236,25 +220,12 @@ export const useFileUpload = (
 
       // Only update state if we have valid files to add
       if (validFiles.length > 0) {
-        // Call the onFilesAdded callback with the newly added valid files
+        const files = !multiple ? validFiles : [...state.files, ...validFiles];
+        setState((prev) => ({ ...prev, files, errors }));
         onFilesAdded?.(validFiles);
-
-        setState((prev) => {
-          const newFiles = !multiple
-            ? validFiles
-            : [...prev.files, ...validFiles];
-          onFilesChange?.(newFiles);
-          return {
-            ...prev,
-            files: newFiles,
-            errors,
-          };
-        });
+        onFilesChange?.(files);
       } else if (errors.length > 0) {
-        setState((prev) => ({
-          ...prev,
-          errors,
-        }));
+        setState((prev) => ({ ...prev, errors }));
       }
 
       // Reset input value after handling files
@@ -269,7 +240,6 @@ export const useFileUpload = (
       maxSize,
       validateFile,
       createPreview,
-      generateUniqueId,
       clearFiles,
       onFilesChange,
       onFilesAdded,
@@ -278,26 +248,19 @@ export const useFileUpload = (
 
   const removeFile = useCallback(
     (id: string) => {
+      let files: FileWithPreview[] = [];
       setState((prev) => {
-        const fileToRemove = prev.files.find((file) => file.id === id);
+        const fileToRemove = prev.files.find((f) => f.id === id);
         if (
-          fileToRemove &&
-          fileToRemove.preview &&
+          fileToRemove?.preview &&
           fileToRemove.file instanceof File &&
           fileToRemove.file.type.startsWith("image/")
-        ) {
+        )
           URL.revokeObjectURL(fileToRemove.preview);
-        }
-
-        const newFiles = prev.files.filter((file) => file.id !== id);
-        onFilesChange?.(newFiles);
-
-        return {
-          ...prev,
-          files: newFiles,
-          errors: [],
-        };
+        files = prev.files.filter((f) => f.id !== id);
+        return { ...prev, files: files, errors: [] };
       });
+      onFilesChange?.(files);
     },
     [onFilesChange],
   );

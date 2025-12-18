@@ -29,11 +29,11 @@ const Chat = () => {
   const running = chatSelectors.useRunning();
   const messages = chatSelectors.useMessages();
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!input.trim() && !running) return;
     if (running) chatActions.abortRun();
-    else chatActions.runAgent();
+    else await chatActions.runAgent();
   };
 
   return (
@@ -62,8 +62,8 @@ const Chat = () => {
         />
         <PromptInputToolbar>
           <PromptInputTools>
-            <ChatAttachmentsDialog />
             <ChatParametersDialog />
+            <ChatAttachmentsDialog />
           </PromptInputTools>
           <WithTooltip content={t(running ? "chat.abort" : "chat.send")}>
             <PromptInputSubmit

@@ -23,4 +23,16 @@ const formatBytes = (bytes: number, decimals = 2): string => {
   return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(d)) + ` ${s[i]}`;
 };
 
-export { cn, formatBytes, getUserMessageContent };
+const fileToBase64 = async (file: File): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === "string")
+        resolve(reader.result.split(",")[1]);
+      else reject(new Error("Failed to convert file to base64"));
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+
+export { cn, fileToBase64, formatBytes, getUserMessageContent };
