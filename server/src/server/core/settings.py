@@ -1,3 +1,4 @@
+from importlib.metadata import version
 from typing import Literal
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -7,7 +8,7 @@ class Settings(BaseSettings):
     dev: bool = False
 
     title: str = "tybot"
-    version: str = "0.0.0"
+    version: str = version("server")
 
     host: str = "127.0.0.1"
     port: int = 8000
@@ -20,7 +21,6 @@ class Settings(BaseSettings):
     logs_backup_count: int = 10
     logs_max_bytes: int = 10 * 1024 * 1024
 
+    ollama_base_url: str = "http://localhost:11434"
+
     model_config = SettingsConfigDict()
-
-
-settings = Settings()

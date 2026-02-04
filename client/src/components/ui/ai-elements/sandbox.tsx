@@ -1,10 +1,10 @@
 "use client";
 
 import type { ToolUIPart } from "ai";
-import { ChevronDownIcon, Code } from "lucide-react";
+import { ChevronDownIcon, CodeIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 
-import { getStatusBadge } from "@/components/ai-elements/tool";
+import { getStatusBadge } from "@/components/ui/ai-elements/tool";
 import {
   Collapsible,
   CollapsibleContent,
@@ -46,7 +46,7 @@ export const SandboxHeader = ({
     {...props}
   >
     <div className="flex items-center gap-2">
-      <Code className="text-muted-foreground size-4" />
+      <CodeIcon className="text-muted-foreground size-4" />
       <span className="text-sm font-medium">{title}</span>
       {getStatusBadge(state)}
     </div>

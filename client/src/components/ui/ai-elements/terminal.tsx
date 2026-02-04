@@ -12,7 +12,7 @@ import {
   useState,
 } from "react";
 
-import { Shimmer } from "@/components/ai-elements/shimmer";
+import { Shimmer } from "@/components/ui/ai-elements/shimmer";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 

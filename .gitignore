@@ -3,4 +3,5 @@ dist/
 node_modules/
 __pycache__/
 client/stats.html
+docker/ollama/
 server/logs/
