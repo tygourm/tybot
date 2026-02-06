@@ -12,7 +12,7 @@ import {
 import type { ComponentProps, ReactNode } from "react";
 import { isValidElement } from "react";
 
-import { CodeBlock } from "@/components/ai-elements/code-block";
+import { CodeBlock } from "@/components/ui/ai-elements/code-block";
 import { Badge } from "@/components/ui/badge";
 import {
   Collapsible,

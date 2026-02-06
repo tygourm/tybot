@@ -1,7 +1,35 @@
 {
+  "app-sidebar": {
+    "threads": "Threads",
+    "collections": "Collections"
+  },
+  "app-sidebar-header": {
+    "close-sidebar": "Close sidebar"
+  },
+  "chat": {
+    "abort": "Abort",
+    "attach": "Attach",
+    "placeholder": "Ask a question",
+    "send": "Send"
+  },
+  "chat-message": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "copy": "Copy",
+    "delete": "Delete",
+    "edit": "Edit",
+    "negative": "Negative",
+    "positive": "Positive",
+    "regenerate": "Regenerate"
+  },
+  "main-button": {
+    "new-thread": "New thread",
+    "open-sidebar": "Open sidebar"
+  },
   "theme-menu": {
     "dark": "Dark",
     "light": "Light",
-    "system": "System"
+    "system": "System",
+    "tooltip": "Change theme"
   }
 }

@@ -3,8 +3,9 @@
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import { cjk } from "@streamdown/cjk";
 import { code } from "@streamdown/code";
-import { math } from "@streamdown/math";
+import { createMathPlugin } from "@streamdown/math";
 import { mermaid } from "@streamdown/mermaid";
+import "katex/dist/katex.min.css";
 import { BrainIcon, ChevronDownIcon } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import {
@@ -17,13 +18,15 @@ import {
 } from "react";
 import { Streamdown } from "streamdown";
 
-import { Shimmer } from "@/components/ai-elements/shimmer";
+import { Shimmer } from "@/components/ui/ai-elements/shimmer";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
+
+const math = createMathPlugin({ singleDollarTextMath: true });
 
 interface ReasoningContextValue {
   isStreaming: boolean;

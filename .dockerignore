@@ -3,4 +3,5 @@ client/node_modules/
 client/components.json
 client/eslint.config.ts
 client/stats.html
+server/logs/
 server/**/__pycache__/

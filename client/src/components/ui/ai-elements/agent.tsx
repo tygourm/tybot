@@ -5,13 +5,13 @@ import { BotIcon } from "lucide-react";
 import type { ComponentProps } from "react";
 import { memo } from "react";
 
-import { CodeBlock } from "@/components/ai-elements/code-block";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { CodeBlock } from "@/components/ui/ai-elements/code-block";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 

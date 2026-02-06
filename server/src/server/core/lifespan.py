@@ -3,8 +3,8 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from server.core import settings
 from server.core.logger import get_logger, init_logger
-from server.core.settings import settings
 
 logger = get_logger(__name__)
 
