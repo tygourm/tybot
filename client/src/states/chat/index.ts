@@ -10,7 +10,6 @@ const useChat = () => {
   const threadId = useStore(store, selectors.threadId);
   const messages = useStore(store, selectors.messages);
   const toolMessages = useStore(store, selectors.toolMessages);
-
   return { ...actions, input, running, threadId, messages, toolMessages };
 };
 

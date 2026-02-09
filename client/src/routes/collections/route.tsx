@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { Collections } from "@/routes/collections/-components/organisms/collections";
+
 const Route = createFileRoute("/collections")({
-  component: () => <div>Hello "/collections"!</div>,
+  component: () => <Collections />,
 });
 
 export { Route };

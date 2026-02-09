@@ -1,3 +1,5 @@
+from alembic.command import upgrade
+from alembic.config import Config
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import get_swagger_ui_html
@@ -8,8 +10,6 @@ from uvicorn import run
 from server.core import settings
 from server.core.lifespan import lifespan
 from server.infra.api.router import router as api
-
-__all__ = ["app", "main"]
 
 app = FastAPI(
     debug=settings.dev,
@@ -31,12 +31,12 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 @app.get("/", include_in_schema=False)
-async def root() -> RedirectResponse:
+def root() -> RedirectResponse:
     return RedirectResponse("/docs")
 
 
 @app.get("/docs", include_in_schema=False)
-async def docs() -> HTMLResponse:
+def docs() -> HTMLResponse:
     return get_swagger_ui_html(
         title=app.title,
         openapi_url="/openapi.json",
@@ -47,6 +47,7 @@ async def docs() -> HTMLResponse:
 
 
 def main() -> None:
+    upgrade(Config("alembic.ini"), "head")
     run(
         "server:app",
         host=settings.host,

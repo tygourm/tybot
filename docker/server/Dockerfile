@@ -35,8 +35,6 @@ RUN groupadd $GROUP && \
     useradd -m -g $GROUP -u 1000 $USER
 WORKDIR /home/$USER/app
 
-COPY server/static static
-
 COPY --from=installer /wheels /wheels
 RUN pip install /wheels/* --no-deps --no-cache-dir && \
     rm -rf /wheels
@@ -44,6 +42,10 @@ RUN pip install /wheels/* --no-deps --no-cache-dir && \
 COPY --from=builder /wheels /wheels
 RUN pip install /wheels/* --no-deps --no-cache-dir && \
     rm -rf /wheels
+
+COPY server/alembic.ini .
+COPY server/static static
+COPY server/src/alembic src/alembic
 
 RUN chown -R $USER:$GROUP /home/$USER
 USER $USER

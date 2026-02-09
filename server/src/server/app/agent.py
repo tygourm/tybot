@@ -8,6 +8,10 @@ from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.tools import tool
 from langgraph.checkpoint.memory import InMemorySaver
 
+from server.core.logger import get_logger
+
+logger = get_logger(__name__)
+
 
 @tool(parse_docstring=True)
 def add(a: int, b: int) -> int:
@@ -55,5 +59,6 @@ class AgentService:
         self.agent = LangGraphAgent(name=name, graph=graph)
 
     async def run(self, input_data: RunAgentInput) -> AsyncGenerator[str]:
+        logger.info("Running agent %s", input_data)
         async for e in self.agent.run(input_data):
             yield e

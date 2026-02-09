@@ -12,11 +12,24 @@ services:
       - 8000:8000
     environment:
       - HOST=0.0.0.0
+      - DATABASE_NAME=tybot
+      - DATABASE_USER=postgres
+      - DATABASE_PASS=postgres
+      - DATABASE_HOST=postgres
       - OLLAMA_BASE_URL=http://ollama:11434
+
+  postgres:
+    image: postgres:18.1
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=tybot
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
 
   ollama:
     gpus: all
-    image: ollama/ollama:0.15.4
+    image: ollama/ollama:0.15.5
     ports:
       - 11434:11434
     environment:
