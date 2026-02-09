@@ -3,7 +3,7 @@
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import type { Experimental_TranscriptionResult as TranscriptionResult } from "ai";
 import type { ComponentProps, ReactNode } from "react";
-import { createContext, useCallback, useContext } from "react";
+import { createContext, useCallback, useContext, useMemo } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -51,15 +51,13 @@ export const Transcription = ({
     prop: externalCurrentTime,
   });
 
+  const contextValue = useMemo(
+    () => ({ currentTime, onSeek, onTimeUpdate: setCurrentTime, segments }),
+    [currentTime, onSeek, setCurrentTime, segments],
+  );
+
   return (
-    <TranscriptionContext.Provider
-      value={{
-        currentTime,
-        onSeek,
-        onTimeUpdate: setCurrentTime,
-        segments,
-      }}
-    >
+    <TranscriptionContext.Provider value={contextValue}>
       <div
         className={cn(
           "flex flex-wrap gap-1 text-sm leading-relaxed",

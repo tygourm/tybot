@@ -12,12 +12,12 @@ function AppSidebarHeader() {
   const { open, toggleSidebar } = useSidebar();
 
   return (
-    <SidebarHeader className="flex-row justify-between">
+    <SidebarHeader className="flex-row">
       <MainButton />
       {open && (
-        <div className="flex flex-row">
+        <div className="flex flex-1 justify-end">
           <ThemeMenu />
-          <WithTooltip tooltip={t("app-sidebar-header.close-sidebar")}>
+          <WithTooltip tooltip={t("sidebar.close-sidebar")}>
             <Button variant="ghost" size="icon-sm" onClick={toggleSidebar}>
               <SidebarIcon />
             </Button>

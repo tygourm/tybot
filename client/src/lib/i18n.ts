@@ -10,9 +10,7 @@ i18n
   .init({
     fallbackLng: "en",
     saveMissing: true,
-    backend: {
-      loadPath: "/i18n/{{lng}}.json",
-    },
+    backend: { loadPath: "/i18n/{{lng}}.json" },
     detection: {
       caches: ["localStorage"],
       lookupLocalStorage: "lang",

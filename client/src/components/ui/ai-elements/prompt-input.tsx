@@ -227,8 +227,10 @@ export const PromptInputProvider = ({
 
   // Keep a ref to attachments for cleanup on unmount (avoids stale closure)
   const attachmentsRef = useRef(attachmentFiles);
-  // eslint-disable-next-line react-hooks/refs
-  attachmentsRef.current = attachmentFiles;
+
+  useEffect(() => {
+    attachmentsRef.current = attachmentFiles;
+  }, [attachmentFiles]);
 
   // Cleanup blob URLs on unmount to prevent memory leaks
   useEffect(
@@ -423,8 +425,10 @@ export const PromptInput = ({
 
   // Keep a ref to files for cleanup on unmount (avoids stale closure)
   const filesRef = useRef(files);
-  // eslint-disable-next-line react-hooks/refs
-  filesRef.current = files;
+
+  useEffect(() => {
+    filesRef.current = files;
+  }, [files]);
 
   const openFileDialogLocal = useCallback(() => {
     inputRef.current?.click();

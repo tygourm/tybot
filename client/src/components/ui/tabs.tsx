@@ -1,6 +1,4 @@
-"use client";
-
-import { type VariantProps, cva } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
 import { Tabs as TabsPrimitive } from "radix-ui";
 import * as React from "react";
 
@@ -89,4 +87,4 @@ function TabsContent({
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
-export { Tabs, TabsContent, TabsList, TabsTrigger, tabsListVariants };
+export { Tabs, TabsContent, TabsList, tabsListVariants, TabsTrigger };

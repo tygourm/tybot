@@ -1,11 +1,13 @@
 "use client";
 
+import "katex/dist/katex.min.css";
+import "streamdown/styles.css";
+
 import { useControllableState } from "@radix-ui/react-use-controllable-state";
 import { cjk } from "@streamdown/cjk";
 import { code } from "@streamdown/code";
 import { createMathPlugin } from "@streamdown/math";
 import { mermaid } from "@streamdown/mermaid";
-import "katex/dist/katex.min.css";
 import { BrainIcon, ChevronDownIcon } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import {
@@ -14,6 +16,8 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
+  useRef,
   useState,
 } from "react";
 import { Streamdown } from "streamdown";
@@ -82,30 +86,22 @@ export const Reasoning = memo(
       prop: durationProp,
     });
 
-    const [hasEverStreamed, setHasEverStreamed] = useState(isStreaming);
+    const hasEverStreamedRef = useRef(isStreaming);
     const [hasAutoClosed, setHasAutoClosed] = useState(false);
-    const [startTime, setStartTime] = useState<number | null>(null);
+    const startTimeRef = useRef<number | null>(null);
 
-    // Track when streaming starts
-    useEffect(() => {
-      if (isStreaming && !hasEverStreamed) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setHasEverStreamed(true);
-      }
-    }, [isStreaming, hasEverStreamed]);
-
-    // Track duration when streaming starts and ends
+    // Track when streaming starts and compute duration
     useEffect(() => {
       if (isStreaming) {
-        if (startTime === null) {
-          // eslint-disable-next-line react-hooks/set-state-in-effect
-          setStartTime(Date.now());
+        hasEverStreamedRef.current = true;
+        if (startTimeRef.current === null) {
+          startTimeRef.current = Date.now();
         }
-      } else if (startTime !== null) {
-        setDuration(Math.ceil((Date.now() - startTime) / MS_IN_S));
-        setStartTime(null);
+      } else if (startTimeRef.current !== null) {
+        setDuration(Math.ceil((Date.now() - startTimeRef.current) / MS_IN_S));
+        startTimeRef.current = null;
       }
-    }, [isStreaming, startTime, setDuration]);
+    }, [isStreaming, setDuration]);
 
     // Auto-open when streaming starts (unless explicitly closed)
     useEffect(() => {
@@ -116,8 +112,12 @@ export const Reasoning = memo(
 
     // Auto-close when streaming ends (once only, and only if it ever streamed)
     useEffect(() => {
-      if (hasEverStreamed && !isStreaming && isOpen && !hasAutoClosed) {
-        // Add a small delay before closing to allow user to see the content
+      if (
+        hasEverStreamedRef.current &&
+        !isStreaming &&
+        isOpen &&
+        !hasAutoClosed
+      ) {
         const timer = setTimeout(() => {
           setIsOpen(false);
           setHasAutoClosed(true);
@@ -125,7 +125,7 @@ export const Reasoning = memo(
 
         return () => clearTimeout(timer);
       }
-    }, [hasEverStreamed, isStreaming, isOpen, setIsOpen, hasAutoClosed]);
+    }, [isStreaming, isOpen, setIsOpen, hasAutoClosed]);
 
     const handleOpenChange = useCallback(
       (newOpen: boolean) => {
@@ -134,10 +134,13 @@ export const Reasoning = memo(
       [setIsOpen],
     );
 
+    const contextValue = useMemo(
+      () => ({ duration, isOpen, isStreaming, setIsOpen }),
+      [duration, isOpen, isStreaming, setIsOpen],
+    );
+
     return (
-      <ReasoningContext.Provider
-        value={{ duration, isOpen, isStreaming, setIsOpen }}
-      >
+      <ReasoningContext.Provider value={contextValue}>
         <Collapsible
           className={cn("not-prose mb-4", className)}
           onOpenChange={handleOpenChange}
@@ -207,6 +210,8 @@ export type ReasoningContentProps = ComponentProps<
   children: string;
 };
 
+const streamdownPlugins = { cjk, code, math, mermaid };
+
 export const ReasoningContent = memo(
   ({ className, children, ...props }: ReasoningContentProps) => (
     <CollapsibleContent
@@ -217,7 +222,7 @@ export const ReasoningContent = memo(
       )}
       {...props}
     >
-      <Streamdown plugins={{ cjk, code, math, mermaid }} {...props}>
+      <Streamdown plugins={streamdownPlugins} {...props}>
         {children}
       </Streamdown>
     </CollapsibleContent>

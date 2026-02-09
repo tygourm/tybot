@@ -4,4 +4,6 @@ node_modules/
 __pycache__/
 client/stats.html
 docker/ollama/
+docker/tileserver/assets/
+docker/tileserver/20260105.pmtiles
 server/logs/

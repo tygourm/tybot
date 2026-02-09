@@ -7,6 +7,7 @@ import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
+  SidebarGroupContent,
   SidebarMenu,
 } from "@/components/ui/sidebar";
 
@@ -18,18 +19,20 @@ function AppSidebar() {
       <AppSidebarHeader />
       <SidebarContent>
         <SidebarGroup>
-          <SidebarMenu>
-            <AppSidebarMenuItem
-              path="/threads"
-              icon={MessagesSquareIcon}
-              label={t("app-sidebar.threads")}
-            />
-            <AppSidebarMenuItem
-              path="/collections"
-              icon={DatabaseIcon}
-              label={t("app-sidebar.collections")}
-            />
-          </SidebarMenu>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <AppSidebarMenuItem
+                path="/threads"
+                icon={MessagesSquareIcon}
+                label={t("sidebar.threads-menu")}
+              />
+              <AppSidebarMenuItem
+                path="/collections"
+                icon={DatabaseIcon}
+                label={t("sidebar.collections-menu")}
+              />
+            </SidebarMenu>
+          </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>

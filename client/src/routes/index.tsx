@@ -1,7 +1,9 @@
-import { Navigate, createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Navigate } from "@tanstack/react-router";
 
-const Route = createFileRoute("/")({
-  component: () => <Navigate to="/threads" replace />,
-});
+const Route = createFileRoute("/")({ component: IndexRoute });
+
+function IndexRoute() {
+  return <Navigate to="/threads" />;
+}
 
 export { Route };
