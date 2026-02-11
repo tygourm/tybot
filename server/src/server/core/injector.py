@@ -2,13 +2,9 @@ from sqlalchemy import create_engine
 
 from server.app.agent import AgentService
 from server.app.collections import CollectionsService
-from server.core.logger import init_logger
-from server.core.settings import Settings
+from server.core.settings import settings
 from server.infra.db.repositories.collections import CollectionsRepository
 from server.infra.llm.model import create_model
-
-settings = Settings()
-init_logger(settings)
 
 engine = create_engine(settings.database_url, echo=settings.dev)
 

@@ -5,7 +5,7 @@ from ag_ui.encoder import EventEncoder
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 
-from server.core import create_agent_service
+from server.core.injector import create_agent_service
 
 router = APIRouter()
 

@@ -2,7 +2,7 @@ from dataclasses import asdict
 
 from fastapi import APIRouter
 
-from server.core import create_collections_service
+from server.core.injector import create_collections_service
 from server.infra.api.collections.validators import (
     CollectionValidator,
     CreateCollectionValidator,

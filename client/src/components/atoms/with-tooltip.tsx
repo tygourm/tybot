@@ -8,15 +8,17 @@ import {
 function WithTooltip({
   tooltip,
   children,
+  side = "top",
 }: {
   tooltip: string;
   children: React.ReactNode;
+  side?: "top" | "right" | "bottom" | "left";
 }) {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipContent>{tooltip}</TooltipContent>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
+        <TooltipContent side={side}>{tooltip}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

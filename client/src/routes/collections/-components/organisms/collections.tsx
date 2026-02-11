@@ -1,6 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Loader2Icon } from "lucide-react";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
-import { createHttpClient } from "@/api/client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { createHttpClient } from "@/lib/api";
 
 function Collections() {
   const client = createHttpClient();
@@ -20,30 +23,37 @@ function Collections() {
   });
 
   const createCollection = useMutation({
-    mutationFn: ({ name }: { name: string }) =>
-      client.post("/collections", { name }),
+    mutationFn: (name: string) => client.post("/collections", { name }),
     onSuccess: async () =>
       await queryClient.invalidateQueries({ queryKey: ["collections"] }),
   });
 
   const deleteCollection = useMutation({
-    mutationFn: ({ id }: { id: string }) => client.delete(`/collections/${id}`),
+    mutationFn: (id: string) => client.delete(`/collections/${id}`),
     onSuccess: async () =>
       await queryClient.invalidateQueries({ queryKey: ["collections"] }),
   });
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  useEffect(() => {
+    if (error) toast.error(error.message);
+  }, [error]);
+
+  if (isLoading)
+    return (
+      <div className="flex size-full items-center justify-center">
+        <Loader2Icon className="animate-spin" />
+      </div>
+    );
 
   return (
-    <div className="flex size-full flex-col gap-2 p-2">
+    <div className="flex size-full flex-col gap-4 p-4">
       <Button
         className="size-fit"
-        onClick={() => createCollection.mutate({ name: crypto.randomUUID() })}
+        onClick={() => createCollection.mutate(crypto.randomUUID())}
       >
         Create collection
       </Button>
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-3 gap-4">
         {data?.data.map((c) => (
           <Card key={c.id}>
             <CardHeader>
@@ -57,7 +67,7 @@ function Collections() {
                 size={"sm"}
                 className="w-full"
                 variant={"outline"}
-                onClick={() => deleteCollection.mutate({ id: c.id })}
+                onClick={() => deleteCollection.mutate(c.id)}
               >
                 Delete
               </Button>

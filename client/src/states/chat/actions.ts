@@ -1,7 +1,7 @@
 import type { UserMessage } from "@ag-ui/core";
 import { toast } from "sonner";
 
-import { createHttpAgent } from "@/api/client";
+import { createHttpAgent } from "@/lib/api";
 import { logger } from "@/lib/logs";
 import { type ChatState, initialState, store } from "@/states/chat/store";
 

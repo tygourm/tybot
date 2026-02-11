@@ -1,14 +1,9 @@
-from logging.config import fileConfig
-
 from alembic import context
-from sqlalchemy import create_engine, pool
 
-from server.core import settings
+from server.core.injector import engine
+from server.core.settings import settings
 from server.infra.db.models import Model
 
-config = context.config
-if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
 target_metadata = Model.metadata
 
 
@@ -24,12 +19,7 @@ def run_migrations_offline() -> None:
 
 
 def run_migrations_online() -> None:
-    connectable = create_engine(
-        settings.database_url,
-        poolclass=pool.NullPool,
-        echo=settings.dev,
-    )
-    with connectable.connect() as connection:
+    with engine.connect() as connection:
         context.configure(connection=connection, target_metadata=target_metadata)
         with context.begin_transaction():
             context.run_migrations()

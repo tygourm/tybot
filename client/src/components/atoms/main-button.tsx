@@ -23,6 +23,7 @@ function MainButton({
 
   return (
     <WithTooltip
+      side={open ? "bottom" : "right"}
       tooltip={
         open ? t("main-button.new-thread") : t("main-button.open-sidebar")
       }

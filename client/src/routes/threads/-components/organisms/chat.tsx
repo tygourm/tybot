@@ -110,6 +110,7 @@ function Chat() {
           <WithTooltip tooltip={running ? t("chat.abort") : t("chat.send")}>
             <PromptInputSubmit
               status={running ? "streaming" : "ready"}
+              variant={running ? "destructive" : "default"}
               disabled={!running && input.text.trim().length === 0}
             />
           </WithTooltip>
