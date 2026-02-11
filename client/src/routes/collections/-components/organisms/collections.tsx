@@ -1,8 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2Icon } from "lucide-react";
+import { Loader2Icon, TrashIcon } from "lucide-react";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
+import { WithTooltip } from "@/components/atoms/with-tooltip";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,28 +12,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { createHttpClient } from "@/lib/api";
+import { CreateCollectionButton } from "@/routes/collections/-components/atoms/create-collection-button";
+import { EmptyCollections } from "@/routes/collections/-components/molecules/empty-collections";
+import { useCollections, useDeleteCollection } from "@/states/rag/queries";
 
 function Collections() {
-  const client = createHttpClient();
-  const queryClient = useQueryClient();
-
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["collections"],
-    queryFn: () => client.get<{ id: string; name: string }[]>("/collections"),
-  });
-
-  const createCollection = useMutation({
-    mutationFn: (name: string) => client.post("/collections", { name }),
-    onSuccess: async () =>
-      await queryClient.invalidateQueries({ queryKey: ["collections"] }),
-  });
-
-  const deleteCollection = useMutation({
-    mutationFn: (id: string) => client.delete(`/collections/${id}`),
-    onSuccess: async () =>
-      await queryClient.invalidateQueries({ queryKey: ["collections"] }),
-  });
+  const { t } = useTranslation();
+  const deleteCollection = useDeleteCollection();
+  const { data, error, isLoading } = useCollections();
 
   useEffect(() => {
     if (error) toast.error(error.message);
@@ -45,14 +32,11 @@ function Collections() {
       </div>
     );
 
+  if (!data || data.data.length === 0) return <EmptyCollections />;
+
   return (
     <div className="flex size-full flex-col gap-4 p-4">
-      <Button
-        className="size-fit"
-        onClick={() => createCollection.mutate(crypto.randomUUID())}
-      >
-        Create collection
-      </Button>
+      <CreateCollectionButton />
       <div className="grid grid-cols-3 gap-4">
         {data?.data.map((c) => (
           <Card key={c.id}>
@@ -62,15 +46,16 @@ function Collections() {
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
               </CardDescription>
             </CardHeader>
-            <CardFooter>
-              <Button
-                size={"sm"}
-                className="w-full"
-                variant={"outline"}
-                onClick={() => deleteCollection.mutate(c.id)}
-              >
-                Delete
-              </Button>
+            <CardFooter className="justify-end">
+              <WithTooltip tooltip={t("actions.delete")}>
+                <Button
+                  variant={"ghost"}
+                  className="hover:text-destructive"
+                  onClick={() => deleteCollection.mutate(c.id)}
+                >
+                  <TrashIcon />
+                </Button>
+              </WithTooltip>
             </CardFooter>
           </Card>
         ))}

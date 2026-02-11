@@ -5,7 +5,6 @@ import { WithTooltip } from "@/components/atoms/with-tooltip";
 import {
   Conversation,
   ConversationContent,
-  ConversationEmptyState,
   ConversationScrollButton,
 } from "@/components/ui/ai-elements/conversation";
 import {
@@ -21,6 +20,13 @@ import {
   PromptInputTextarea,
   PromptInputTools,
 } from "@/components/ui/ai-elements/prompt-input";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import {
   AssistantChatMessage,
   UserChatMessage,
@@ -70,12 +76,15 @@ function Chat() {
   return (
     <div className="flex size-full flex-col items-center justify-center overflow-hidden px-2 pb-2">
       {messages.length === 0 ? (
-        <ConversationEmptyState
-          className="size-fit"
-          icon={<BotIcon />}
-          title="tybot"
-          description="Yet another chatbot."
-        ></ConversationEmptyState>
+        <Empty className="mb-6 max-h-0">
+          <EmptyHeader>
+            <EmptyMedia>
+              <BotIcon />
+            </EmptyMedia>
+            <EmptyTitle>tybot</EmptyTitle>
+            <EmptyDescription>Yet another chatbot.</EmptyDescription>
+          </EmptyHeader>
+        </Empty>
       ) : (
         <Conversation className="w-full max-w-3xl">
           <ConversationContent className="gap-2 p-2">
@@ -103,11 +112,13 @@ function Chat() {
             <PromptInputActionMenu>
               <PromptInputActionMenuTrigger />
               <PromptInputActionMenuContent>
-                <PromptInputActionAddAttachments label={t("chat.attach")} />
+                <PromptInputActionAddAttachments label={t("actions.attach")} />
               </PromptInputActionMenuContent>
             </PromptInputActionMenu>
           </PromptInputTools>
-          <WithTooltip tooltip={running ? t("chat.abort") : t("chat.send")}>
+          <WithTooltip
+            tooltip={running ? t("actions.abort") : t("actions.send")}
+          >
             <PromptInputSubmit
               status={running ? "streaming" : "ready"}
               variant={running ? "destructive" : "default"}

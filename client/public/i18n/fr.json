@@ -1,4 +1,15 @@
 {
+  "actions": {
+    "abort": "Interrompre",
+    "attach": "Joindre",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "copy": "Copier",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "regenerate": "Régénérer",
+    "send": "Envoyer"
+  },
   "app-sidebar": {
     "threads": "Conversations",
     "collections": "Collections"
@@ -7,20 +18,15 @@
     "close-sidebar": "Fermer la barre latérale"
   },
   "chat": {
-    "abort": "Interrompre",
-    "attach": "Joindre",
-    "placeholder": "Poser une question",
-    "send": "Envoyer"
+    "placeholder": "Poser une question"
   },
   "chat-message": {
-    "cancel": "Annuler",
-    "confirm": "Confirmer",
-    "copy": "Copier",
-    "delete": "Supprimer",
-    "edit": "Modifier",
     "negative": "Négatif",
-    "positive": "Positif",
-    "regenerate": "Régénérer"
+    "positive": "Positif"
+  },
+  "collections": {
+    "create": "Créer une collection",
+    "empty": "Aucune collection"
   },
   "main-button": {
     "new-thread": "Nouvelle conversation",

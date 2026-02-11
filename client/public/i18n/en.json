@@ -1,4 +1,15 @@
 {
+  "actions": {
+    "abort": "Abort",
+    "attach": "Attach",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "copy": "Copy",
+    "delete": "Delete",
+    "edit": "Edit",
+    "regenerate": "Regenerate",
+    "send": "Send"
+  },
   "app-sidebar": {
     "threads": "Threads",
     "collections": "Collections"
@@ -7,20 +18,15 @@
     "close-sidebar": "Close sidebar"
   },
   "chat": {
-    "abort": "Abort",
-    "attach": "Attach",
-    "placeholder": "Ask a question",
-    "send": "Send"
+    "placeholder": "Ask a question"
   },
   "chat-message": {
-    "cancel": "Cancel",
-    "confirm": "Confirm",
-    "copy": "Copy",
-    "delete": "Delete",
-    "edit": "Edit",
     "negative": "Negative",
-    "positive": "Positive",
-    "regenerate": "Regenerate"
+    "positive": "Positive"
+  },
+  "collections": {
+    "create": "Create collection",
+    "empty": "No collections"
   },
   "main-button": {
     "new-thread": "New thread",

@@ -66,7 +66,7 @@ function UserChatMessage({ message }: { message: UserMessage }) {
                 setEditContent(content);
               }}
             >
-              {t("chat-message.cancel")}
+              {t("actions.cancel")}
             </Button>
             <Button
               disabled={
@@ -78,7 +78,7 @@ function UserChatMessage({ message }: { message: UserMessage }) {
                 updateMessage(message.id, editContent.trim());
               }}
             >
-              {t("chat-message.confirm")}
+              {t("actions.confirm")}
             </Button>
           </div>
         </>
@@ -92,7 +92,7 @@ function UserChatMessage({ message }: { message: UserMessage }) {
       <MessageActions className="justify-end">
         <MessageAction
           disabled={running}
-          tooltip={t("chat-message.edit")}
+          tooltip={t("actions.edit")}
           onClick={() => {
             toggleEdit();
             setEditContent(content);
@@ -102,14 +102,14 @@ function UserChatMessage({ message }: { message: UserMessage }) {
         </MessageAction>
         <MessageAction
           disabled={running}
-          tooltip={t("chat-message.delete")}
+          tooltip={t("actions.delete")}
           onClick={() => deleteMessage(message.id)}
         >
           <TrashIcon />
         </MessageAction>
         <MessageAction
+          tooltip={t("actions.copy")}
           onClick={() => copy(content)}
-          tooltip={t("chat-message.copy")}
         >
           {isCopied ? <CheckIcon /> : <CopyIcon />}
         </MessageAction>
@@ -156,13 +156,13 @@ function TextAssistantChatMessage({ message }: { message: AssistantMessage }) {
         </MessageAction>
         <MessageAction
           disabled={running}
-          tooltip={t("chat-message.regenerate")}
+          tooltip={t("actions.regenerate")}
           onClick={() => regenerateMessage(message.id)}
         >
           <RefreshCcwIcon />
         </MessageAction>
         <MessageAction
-          tooltip={t("chat-message.copy")}
+          tooltip={t("actions.copy")}
           onClick={() => copy(message.content || "")}
         >
           {isCopied ? <CheckIcon /> : <CopyIcon />}
