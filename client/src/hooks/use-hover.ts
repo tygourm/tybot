@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+"use client";
+
+import { type RefObject, useEffect, useState } from "react";
 
 const useHover = <T extends HTMLElement = HTMLElement>(
-  ref: React.RefObject<T | null>,
+  ref: RefObject<T | null>,
 ) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!ref.current) return;
     const element = ref.current;
-    if (!element) {
-      return;
-    }
 
     const handleMouseEnter = () => setIsHovered(true);
     const handleMouseLeave = () => setIsHovered(false);

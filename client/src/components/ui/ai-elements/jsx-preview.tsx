@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertCircleIcon } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import {
   createContext,
@@ -126,19 +126,19 @@ export const JSXPreview = memo(
     children,
     ...props
   }: JSXPreviewProps) => {
+    const [prevJsx, setPrevJsx] = useState(jsx);
     const [error, setError] = useState<Error | null>(null);
+
+    // Clear error when jsx changes (derived state pattern)
+    if (jsx !== prevJsx) {
+      setPrevJsx(jsx);
+      setError(null);
+    }
 
     const processedJsx = useMemo(
       () => (isStreaming ? completeJsxTag(jsx) : jsx),
       [jsx, isStreaming],
     );
-
-    // Clear error when jsx changes
-    // biome-ignore lint/correctness/useExhaustiveDependencies: jsx change should reset error
-    useEffect(() => {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setError(null);
-    }, [jsx]);
 
     return (
       <JSXPreviewContext.Provider
@@ -239,7 +239,7 @@ export const JSXPreviewError = memo(
           renderChildren(children, error)
         ) : (
           <>
-            <AlertCircleIcon className="size-4 shrink-0" />
+            <AlertCircle className="size-4 shrink-0" />
             <span>{error.message}</span>
           </>
         )}

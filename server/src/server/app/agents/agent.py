@@ -4,56 +4,42 @@ from datetime import UTC, datetime
 from ag_ui.core import RunAgentInput
 from ag_ui_langgraph import LangGraphAgent
 from langchain.agents import create_agent
+from langchain.agents.middleware import SummarizationMiddleware, ToolRetryMiddleware
 from langchain_core.language_models.chat_models import BaseChatModel
-from langchain_core.tools import tool
 from langgraph.checkpoint.memory import InMemorySaver
 
+from server.app.agents.tools import geo_toolkit, math_toolkit
+from server.core.logger import get_logger
 
-@tool(parse_docstring=True)
-def add(a: int, b: int) -> int:
-    """Add two numbers.
-
-    Args:
-        a: The first number.
-        b: The second number.
-
-    Returns:
-        The sum of the two numbers.
-
-    """
-    return a + b
-
-
-@tool(parse_docstring=True)
-def sub(a: int, b: int) -> int:
-    """Subtract two numbers.
-
-    Args:
-        a: The first number.
-        b: The second number.
-
-    Returns:
-        The difference of the two numbers.
-
-    """
-    return a - b
+logger = get_logger(__name__)
 
 
 class AgentService:
-    def __init__(self, name: str, model: BaseChatModel, *, debug: bool) -> None:
+    def __init__(
+        self,
+        name: str,
+        model: BaseChatModel,
+        *,
+        debug: bool,
+    ) -> None:
         system_prompt = f"""
         You are tybot, a helpful assistant.
         Current time is {datetime.now(tz=UTC)}.
         """
         graph = create_agent(
             model,
-            [add, sub],
+            [*geo_toolkit, *math_toolkit],
             system_prompt=system_prompt,
+            middleware=[
+                ToolRetryMiddleware(),
+                SummarizationMiddleware(model),
+            ],
             checkpointer=InMemorySaver(),
             debug=debug,
         )
         self.agent = LangGraphAgent(name=name, graph=graph)
 
     async def run(self, input_data: RunAgentInput) -> AsyncGenerator[str]:
+        logger.info("Running agent %s", input_data)
         async for e in self.agent.run(input_data):
             yield e

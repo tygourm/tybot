@@ -1,3 +1,5 @@
+import type { ComponentProps } from "react";
+
 import {
   Tooltip,
   TooltipContent,
@@ -8,15 +10,16 @@ import {
 function WithTooltip({
   tooltip,
   children,
+  ...props
 }: {
   tooltip: string;
   children: React.ReactNode;
-}) {
+} & ComponentProps<typeof TooltipContent>) {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipContent>{tooltip}</TooltipContent>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
+        <TooltipContent {...props}>{tooltip}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
   );

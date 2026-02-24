@@ -1,35 +1,49 @@
 {
-  "app-sidebar": {
-    "threads": "Conversations",
-    "collections": "Collections"
-  },
-  "app-sidebar-header": {
-    "close-sidebar": "Fermer la barre latérale"
-  },
-  "chat": {
+  "actions": {
     "abort": "Interrompre",
     "attach": "Joindre",
-    "placeholder": "Poser une question",
-    "send": "Envoyer"
-  },
-  "chat-message": {
     "cancel": "Annuler",
     "confirm": "Confirmer",
     "copy": "Copier",
     "delete": "Supprimer",
-    "edit": "Modifier",
-    "negative": "Négatif",
-    "positive": "Positif",
-    "regenerate": "Régénérer"
+    "regenerate": "Régénérer",
+    "reset": "Réinitialiser",
+    "send": "Envoyer",
+    "update": "Modifier"
   },
-  "main-button": {
+  "chat": {
+    "welcome": "Quel est le programme aujourd'hui ? "
+  },
+  "chat-message": {
+    "negative": "Négatif",
+    "positive": "Positif"
+  },
+  "chat-prompt-input": {
+    "placeholder": "Poser une question"
+  },
+  "collections": {
+    "add-files": "Ajouter des fichiers",
+    "collections-title": "Collections",
+    "create-collection": "Créer une collection",
+    "delete-collection": "Supprimer la collection",
+    "ingest-collection-success": "Fichiers ingérés avec succès",
+    "no-collection": "Aucune collection"
+  },
+  "create-collection-dialog": {
+    "collection-name": "Nom de la collection",
+    "invalid-name": "Nom invalide"
+  },
+  "sidebar": {
+    "close-sidebar": "Fermer la barre latérale",
+    "collections-menu": "Collections",
     "new-thread": "Nouvelle conversation",
-    "open-sidebar": "Ouvrir la barre latérale"
+    "open-sidebar": "Ouvrir la barre latérale",
+    "threads-menu": "Conversations"
   },
   "theme-menu": {
     "dark": "Sombre",
     "light": "Clair",
-    "system": "Système",
-    "tooltip": "Changer le thème"
+    "system": "Système",
+    "tooltip": "Changer le thème"
   }
 }

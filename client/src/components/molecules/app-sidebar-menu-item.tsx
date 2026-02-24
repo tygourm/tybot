@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "@tanstack/react-router";
-import { type LucideIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 import { SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import type { FileRoutesByTo } from "@/routeTree.gen";
@@ -14,20 +14,17 @@ function AppSidebarMenuItem({
   path: keyof FileRoutesByTo;
 }) {
   const navigate = useNavigate();
-  const pathName = useLocation().pathname;
+  const pathname = useLocation().pathname;
 
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
-        asChild
         tooltip={label}
-        isActive={pathName === path}
+        isActive={path === pathname}
         onClick={() => navigate({ to: path })}
       >
-        <div>
-          <Icon />
-          <span>{label}</span>
-        </div>
+        <Icon />
+        <span>{label}</span>
       </SidebarMenuButton>
     </SidebarMenuItem>
   );

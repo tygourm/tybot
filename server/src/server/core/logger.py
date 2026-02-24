@@ -3,7 +3,7 @@ import logging.handlers
 from pathlib import Path
 from sys import stdout
 
-from server.core import Settings
+from server.core.settings import Settings
 
 
 def init_logger(settings: Settings) -> None:

@@ -1,9 +1,10 @@
-import { type Message } from "@ag-ui/core";
+import type { Message } from "@ag-ui/core";
 import { Store } from "@tanstack/react-store";
 
 import type { PromptInputMessage } from "@/components/ui/ai-elements/prompt-input";
 
 type ChatState = {
+  mode: "dashboard" | "fullscreen";
   input: PromptInputMessage;
   messages: Message[];
   running: boolean;
@@ -12,11 +13,12 @@ type ChatState = {
 };
 
 const initialState: ChatState = {
+  mode: "fullscreen",
   input: { text: "", files: [] },
-  running: false,
   messages: [],
+  running: false,
 };
 
 const store = new Store<ChatState>(initialState);
 
-export { initialState, store, type ChatState };
+export { type ChatState, initialState, store };

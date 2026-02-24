@@ -74,12 +74,11 @@ const useTheme = () => {
 
 const useResolvedTheme = () => {
   const { theme } = useTheme();
-  if (theme === "system") {
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
+  return theme === "system"
+    ? window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
-      : "light";
-  }
-  return theme;
+      : "light"
+    : theme;
 };
 
 // eslint-disable-next-line react-refresh/only-export-components

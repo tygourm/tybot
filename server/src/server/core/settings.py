@@ -21,6 +21,18 @@ class Settings(BaseSettings):
     logs_backup_count: int = 10
     logs_max_bytes: int = 10 * 1024 * 1024
 
+    database_name: str = "tybot"
+    database_user: str = "postgres"
+    database_pass: str = "postgres"  # noqa: S105
+    database_host: str = "localhost"
+
     ollama_base_url: str = "http://localhost:11434"
 
     model_config = SettingsConfigDict()
+
+    @property
+    def database_url(self) -> str:
+        return f"postgresql://{self.database_user}:{self.database_pass}@{self.database_host}/{self.database_name}"
+
+
+settings = Settings()

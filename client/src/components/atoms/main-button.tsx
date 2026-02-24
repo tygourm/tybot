@@ -1,49 +1,44 @@
 import { useNavigate } from "@tanstack/react-router";
-import { BotIcon, SidebarIcon, SquarePenIcon } from "lucide-react";
-import { type ComponentProps, useRef } from "react";
+import { BotIcon, PenSquareIcon, SidebarIcon } from "lucide-react";
+import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 import { WithTooltip } from "@/components/atoms/with-tooltip";
-import { Button } from "@/components/ui/button";
-import { useSidebar } from "@/components/ui/sidebar";
+import { SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
 import { useHover } from "@/hooks/use-hover";
-import { useChat } from "@/states/chat";
+import { useChat } from "@/models/chat";
 
-function MainButton({
-  variant = "ghost",
-  size = "icon-sm",
-  ...props
-}: ComponentProps<typeof Button>) {
+function MainButton() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { open, toggleSidebar } = useSidebar();
+  const { resetChatState, abortRun } = useChat();
+
   const ref = useRef<HTMLButtonElement>(null);
-  const { abortRun, resetChatState } = useChat();
   const isHovered = useHover(ref);
 
   return (
     <WithTooltip
-      tooltip={
-        open ? t("main-button.new-thread") : t("main-button.open-sidebar")
-      }
+      side={open ? "top" : "right"}
+      tooltip={open ? t("sidebar.new-thread") : t("sidebar.open-sidebar")}
     >
-      <Button
-        ref={ref}
-        size={size}
-        variant={variant}
-        onClick={
-          open
-            ? () => {
-                abortRun();
-                resetChatState();
-                navigate({ to: "/threads" });
-              }
-            : toggleSidebar
-        }
-        {...props}
-      >
-        {isHovered ? open ? <SquarePenIcon /> : <SidebarIcon /> : <BotIcon />}
-      </Button>
+      {open ? (
+        <SidebarMenuButton
+          ref={ref}
+          className="w-fit"
+          onClick={() => {
+            abortRun();
+            resetChatState();
+            navigate({ to: "/threads" });
+          }}
+        >
+          {isHovered ? <PenSquareIcon /> : <BotIcon />}
+        </SidebarMenuButton>
+      ) : (
+        <SidebarMenuButton ref={ref} className="w-fit" onClick={toggleSidebar}>
+          {isHovered ? <SidebarIcon /> : <BotIcon />}
+        </SidebarMenuButton>
+      )}
     </WithTooltip>
   );
 }

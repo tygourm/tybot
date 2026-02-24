@@ -2,7 +2,7 @@
 
 import { ChevronRightIcon } from "lucide-react";
 import type { ComponentProps, HTMLAttributes } from "react";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import {
@@ -64,38 +64,54 @@ export const SchemaDisplay = ({
   className,
   children,
   ...props
-}: SchemaDisplayProps) => (
-  <SchemaDisplayContext.Provider
-    value={{ description, method, parameters, path, requestBody, responseBody }}
-  >
-    <div
-      className={cn(
-        "bg-background overflow-hidden rounded-lg border",
-        className,
-      )}
-      {...props}
-    >
-      {children ?? (
-        <>
-          <SchemaDisplayHeader>
-            <div className="flex items-center gap-3">
-              <SchemaDisplayMethod />
-              <SchemaDisplayPath />
-            </div>
-          </SchemaDisplayHeader>
-          {description && <SchemaDisplayDescription />}
-          <SchemaDisplayContent>
-            {parameters && parameters.length > 0 && <SchemaDisplayParameters />}
-            {requestBody && requestBody.length > 0 && <SchemaDisplayRequest />}
-            {responseBody && responseBody.length > 0 && (
-              <SchemaDisplayResponse />
-            )}
-          </SchemaDisplayContent>
-        </>
-      )}
-    </div>
-  </SchemaDisplayContext.Provider>
-);
+}: SchemaDisplayProps) => {
+  const contextValue = useMemo(
+    () => ({
+      description,
+      method,
+      parameters,
+      path,
+      requestBody,
+      responseBody,
+    }),
+    [description, method, parameters, path, requestBody, responseBody],
+  );
+
+  return (
+    <SchemaDisplayContext.Provider value={contextValue}>
+      <div
+        className={cn(
+          "bg-background overflow-hidden rounded-lg border",
+          className,
+        )}
+        {...props}
+      >
+        {children ?? (
+          <>
+            <SchemaDisplayHeader>
+              <div className="flex items-center gap-3">
+                <SchemaDisplayMethod />
+                <SchemaDisplayPath />
+              </div>
+            </SchemaDisplayHeader>
+            {description && <SchemaDisplayDescription />}
+            <SchemaDisplayContent>
+              {parameters && parameters.length > 0 && (
+                <SchemaDisplayParameters />
+              )}
+              {requestBody && requestBody.length > 0 && (
+                <SchemaDisplayRequest />
+              )}
+              {responseBody && responseBody.length > 0 && (
+                <SchemaDisplayResponse />
+              )}
+            </SchemaDisplayContent>
+          </>
+        )}
+      </div>
+    </SchemaDisplayContext.Provider>
+  );
+};
 
 export type SchemaDisplayHeaderProps = HTMLAttributes<HTMLDivElement>;
 

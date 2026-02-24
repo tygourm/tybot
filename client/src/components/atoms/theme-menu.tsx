@@ -1,5 +1,4 @@
 import { MoonIcon, SunIcon } from "lucide-react";
-import type { ComponentProps } from "react";
 import { useTranslation } from "react-i18next";
 
 import { WithTooltip } from "@/components/atoms/with-tooltip";
@@ -12,11 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-function ThemeMenu({
-  variant = "ghost",
-  size = "icon-sm",
-  ...props
-}: ComponentProps<typeof Button>) {
+function ThemeMenu() {
   const { t } = useTranslation();
   const { setTheme } = useTheme();
 
@@ -24,7 +19,7 @@ function ThemeMenu({
     <DropdownMenu>
       <WithTooltip tooltip={t("theme-menu.tooltip")}>
         <DropdownMenuTrigger asChild>
-          <Button variant={variant} size={size} {...props}>
+          <Button variant="ghost" size="icon-sm">
             <SunIcon className="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
             <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
           </Button>
